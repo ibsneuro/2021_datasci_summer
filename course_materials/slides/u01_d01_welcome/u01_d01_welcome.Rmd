@@ -1,0 +1,38 @@
+---
+title: "Welcome!"
+subtitle: "Data Science for Cognitive (Neuro)Science"
+author: "Ina Bornkessel-Schlesewsky"
+date: "Jan 2021 (updated: `r Sys.Date()`)"
+output:
+  xaringan::moon_reader:
+    css: [default, metropolis, metropolis-fonts]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+class: inverse, mline, center, middle
+
+# What is Data Science?
+
+---
+
+# What is Data Science?
+
+.pull-left[
+
+<br>
+> Data science is an exciting discipline that allows you to turn raw data into understanding, insight, and knowledge. 
+
+<br>
+
+.font70[
+Wickham, H. & Grolemund, G. (2017) R for Data Science: Import, Tidy, Transform, Visualize, and Model Data. O'Reilly Media.
+Henceforth: *R4DS*
+]
+]
+---
+
+

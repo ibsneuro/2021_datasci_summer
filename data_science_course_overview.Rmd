@@ -1,5 +1,5 @@
 ---
-title: "Data science for cognitive neuroscience and psychology – brief course overview"
+title: "Data science for cognitive neuroscience and psychology (short summer course version) – brief course overview"
 author: "Ina Bornkessel-Schlesewsky"
 date: "January 2021"
 output: pdf_document
