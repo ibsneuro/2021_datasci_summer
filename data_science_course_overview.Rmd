@@ -1,0 +1,73 @@
+---
+title: "Data science for cognitive neuroscience and psychology – brief course overview"
+author: "Ina Bornkessel-Schlesewsky"
+date: "January 2021"
+output: pdf_document
+fontsize: 12pt
+urlcolor: blue
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Welcome!
+
+Thank you for registering for the *Data science for cognitive neuroscience and psychology* short course.
+This document provides a brief overview of the course.
+All other materials will be provided upon course commencement.
+Should you have any questions, please don't hesitate to contact me.
+
+I look forward to exploring some data science fundamentals with you!
+
+-- [Ina Bornkessel-Schlesewsky](mailto:Ina.Bornkessel-Schlesewsky@unisa.edu.au)
+
+## Important details
+
+### Days and times:
+
+* Wednesday, Jan 20th -- Wednesday, Jan 27th; 9:30 am -- 12:00 pm & 1:00 pm -- 4:00 pm on each day^[Note that each morning and afternoon session will include short breaks.]
+* Note that the course will not take place on Tuesday, Jan 26th due to the Australia Day public holiday
+
+Room: MAG B1-52
+
+### What you will need:
+
+Please bring a laptop with which you can access the internet to each session (and a charger if needed).
+
+### Preparation:
+
+You do not need to do anything to prepare for this course, as it is designed to be self-contained.
+Parts of the course will be loosely based on the book *R for Data Science* by Hadley Wickham and Garrett Grolemund.
+If you want to check it out before the course, it is freely available [here](https://r4ds.had.co.nz/).
+
+## Brief course overview
+
+### Day 1 (Wednesday 20th)
+* Introduction: What is data science and why do we need it? More specifically, why do psychologists and cognitive neuroscientists need it?
+* What to expect in this course
+* An example to introduce basic concepts of data exploration through visualisation
+* Basic introduction to R and RStudio Cloud (the platform which we will be using for most of this course)
+* Reproducible research and reproducible reports
+
+### Day 2 (Thursday 21st)
+* Getting to know R — let’s dig a big deeper
+* Data wrangling: getting data into the right shape for exploration / visualisation
+* More on exploration and visualisation using other examples
+* Tips on what to look for and what to avoid
+
+### Day 3 (Friday 22nd)
+* Introduction to open science
+* More on reproducibility and how RMarkdown can help
+* Sharing and collaboration: introducing repositories and version control (e.g. git and GitHub; OSF)
+* Others tools to foster open science (e.g. preprints and registered reports)
+
+### Day 4 (Monday 25th)
+* Putting it all together with a mini project of your own choosing
+* Work through from scratch to produce a reproducible report
+
+### Day 5 (Wednesday 27th)
+* Getting yourself set up for your own projects -- installing R, RStudio, git etc. on your own computer
+* Workflow tips
+* Working as a team
+* Where to go from here
