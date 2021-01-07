@@ -4,9 +4,9 @@
     <title>Welcome!</title>
     <meta charset="utf-8" />
     <meta name="author" content="Ina Bornkessel-Schlesewsky" />
-    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
-    <link href="libs/remark-css-0.0.1/metropolis.css" rel="stylesheet" />
-    <link href="libs/remark-css-0.0.1/metropolis-fonts.css" rel="stylesheet" />
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/remark-css/metropolis.css" rel="stylesheet" />
+    <link href="libs/remark-css/metropolis-fonts.css" rel="stylesheet" />
   </head>
   <body>
     <textarea id="source">
@@ -39,8 +39,153 @@ class: inverse, mline, center, middle
 Wickham, H. &amp; Grolemund, G. (2017) R for Data Science: Import, Tidy, Transform, Visualize, and Model Data. O'Reilly Media.
 Henceforth: *R4DS*
 ]
+
+freely available at https://r4ds.had.co.nz
+]
+
+.pull-right[
+&lt;img src="images/r4ds.png" width="85%" style="display: block; margin: auto 0 auto auto;" /&gt;
+]
+
+---
+
+# What is Data Science?
+
+&lt;img src="images/Data_scientist_Venn_diagram.png" width="60%" style="display: block; margin: auto auto auto 0;" /&gt;
+
+.pull-right[
+  .font60[
+  StackExchange Data Science user Stephan Kolassa [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) via [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Data_scientist_Venn_diagram.png)
+  ]
 ]
 ---
+
+# What is Data Science?
+
+.pull-left[
+
+### The "sexy new job"
+
+  .font80[
+&gt; 'Hal Varian, the chief economist at Google, is known to have said, “The sexy job in the next 10 years will be statisticians.
+People think I’m joking, but who would’ve guessed that computer engineers would’ve been the sexy job of the 1990s?”'
+
+&lt;br&gt;
+
+&gt; 'If “sexy” means having rare qualities that are much in demand, data scientists are already there.
+They are difficult and expensive to hire and, given the very competitive market for their services, difficult to retain.
+There simply aren’t a lot of people with their combination of scientific background and computational and analytical skills.'
+  ]
+]
+
+&lt;img src="images/data_science_hbr.png" width="50%" style="display: block; margin: auto 0 auto auto;" /&gt;
+
+&lt;img src="images/hbr_cover.png" width="40%" style="display: block; margin: auto 0 auto auto;" /&gt;
+
+---
+
+# Data Science ...
+
+##  ... why do we need it for cognitive neuroscience and psychology?
+
+&lt;br&gt;
+
+.font150[
+Quite simply, because we're also interested in turning "raw data into understanding, insight, and knowledge", as well as in communicating our results!
+]
+---
+
+# What you will learn in this course
+
+&lt;br&gt;
+
+* how to gain insights from data using contemporary computational tools
+* basic programming skills in an open source programming language (i.e. R)
+* how to produce reproducible reports (good for science and good for you!)
+* how to use online repositories such as GitHub or the Open Science Framework to share data and code
+
+You will also develop an understanding of how these tools help to foster open science, reproducible research and thus the ethical treatment of data.
+
+While critical for research in cognitive (neuro-)science, the data science skills acquired in this course generalise readily to other domains (think sexy jobs!)
+
+---
+
+# So is this just another stats course ...
+
+.pull-left[
+  .font150[
+  Apart from the fact that we're using R?
+  ]
+]
+
+-- 
+
+.pull-right[
+
+  ![](https://media.giphy.com/media/ftqLysT45BJMagKFuk/giphy.gif)
+  
+  .font60[
+  "Oh no you didn't" gif by *happydog* from https://giphy.com
+  ]
+]
+
+---
+
+# Not just another stats course
+
+
+### Our focus will be on
+
+* understanding data rather than statistical tests per se (though they will come up)
+* philosophy / workflow rather than "results"
+* (moral of the story: it's not just about statistical significance!)
+
+### You will be introduced to a set of tools and workflow that
+
+* foster good practices in dealing with data (i.e. we try to draw the best insights we can from a dataset)
+* foster open science (i.e. we share our data and "show our work", which is good for science and for sharing knowledge)
+* are economical and reproducible (i.e. we avoid doing stuff by hand)
+
+---
+
+# Speaking of workflow
+
+&lt;br&gt;
+
+&lt;img src="images/r4ds_workflow.png" width="100%" /&gt;
+
+.font80[
+  from *R4DS*
+]
+
+---
+
+# Speaking of workflow
+
+
+.pull-left[
+
+&lt;img src="images/r4ds_workflow.png" width="100%" style="display: block; margin: auto auto auto 0;" /&gt;
+
+* **import** data (into R)
+* **tidy** data
+  - bring it into a consistent format that can be used for multiple purposes (each column = variable; each row = observation)
+  - lets you focus on understanding the data rather than which format you need
+
+]
+
+.pull-right[
+
+&lt;br&gt;
+
+* **transform** data
+  * e.g. focus on observations of interest (such as those from a particular location), create new variables (such as speed from distance and time), compute summary statistics
+* **visualise** data
+  * essential for understanding
+* **model** data
+  * use (statistical) models to answer your questions about the data
+* **communicate** insights
+]
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
