@@ -1,8 +1,10 @@
 ---
 title: "Cumulative deaths from COVID-19"
-author: "Mine Çetinkaya-Rundel"
-output: github_document
-always_allow_html: true
+author: "Mine Çetinkaya-Rundel (adapted by Ina Bornkessel-Schlesewsky)"
+output: 
+  html_document:
+    keep_md: yes
+
 ---
 
 <!-- adapted by Ina Bornkessel-Schlesewsky from https://datasciencebox.org under a CC BY-SA 4.0 licence (https://creativecommons.org/licenses/by-sa/4.0/); original document:  https://github.com/rstudio-education/datascience-box/blob/master/course-materials/application-exercises/ae-01b-covid/covid.Rmd
