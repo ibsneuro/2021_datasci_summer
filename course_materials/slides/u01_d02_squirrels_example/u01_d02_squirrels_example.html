@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>A first example</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Ina Bornkessel-Schlesewsky" />
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/remark-css/metropolis.css" rel="stylesheet" />
+    <link href="libs/remark-css/metropolis-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# A first example
+## Data Science for Cognitive (Neuro)Science
+### Ina Bornkessel-Schlesewsky
+### Jan 2021 (updated: 2021-01-08)
+
+---
+
+
+
+
+# An Adelaidian in New York ...
+
+.pull-left[
+
+Imagine the following scenario: you are excited to be embarking on your first trip to New York and one of the highlights that you are particularly looking forward to is visiting Central Park.
+
+&lt;img src="images/central_park.jpeg" width="80%" style="display: block; margin: auto auto auto 0;" /&gt;
+
+.font60[
+Central Park in May 2019. Source: IBS
+
+&lt;br&gt;
+
+Map from GoogleMaps
+]
+
+]
+
+.pull-right[
+&lt;img src="images/central_park_map_manhattan.png" width="75%" style="display: block; margin: auto 0 auto auto;" /&gt;
+
+]
+
+---
+
+# ... in search of squirrels!
+
+.pull-left[
+
+In addition to its spectacular scenery, Central Park has interesting wildlife, notably Eastern Grey squirrels. 
+
+&lt;img src="images/squirrel.jpg" width="80%" style="display: block; margin: auto auto auto 0;" /&gt;
+
+.font60[
+Source: Rhododendrites [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0)
+via [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Squirrel_in_Central_Park_10100.jpg)
+]
+
+]
+
+.pull-right[
+
+Now, however, you face the following dilemma: your itinerary is so full, that you will probably only be able to visit Central Park once.
+How can you best plan your visit so that you will be most likely to see squirrels?
+
+Luckily, you come across data from the [Central Park Squirrel Census](https://www.thesquirrelcensus.com/)!
+
+]
+
+---
+
+# The Central Park Squirrel Census
+
+&lt;br&gt;
+
+- In October 2018, the Central Park Squirrel Census counted the squirrels in Central Park "with the help of 323 volunteer Squirrel Sighters".
+- The data are publicly available via [NYC Open Data](https://data.cityofnewyork.us/Environment/2018-Central-Park-Squirrel-Census-Squirrel-Data/vfnx-vebw).
+- Conveniently, they have also been made available as an R package (more on what this means later) by Dr Mine Çetinkaya-Rundel, who is an Associate Professor in the Department of Statistical Science at Duke University and a Professional Educator and Data Scientist at RStudio.
+- The package can be installed from [a github repository](https://github.com/mine-cetinkaya-rundel/nycsquirrels18) -- again, you will learn more about what github is and why it is useful later on in this course.
+
+***
+
+We can load this package into R using the following code: 
+
+
+```r
+library(nycsquirrels18)
+```
+
+&lt;small&gt;
+(Note: I don't expect you to fully understand the code at this point.
+I am merely presenting it so that you can start to get a feel for what R code looks like.
+I will walk you through each step in detail later.)
+&lt;/small&gt;
+
+---
+
+# What's in the data?
+
+The `nycsquirrels18` package contains the squirrel census dataset (called `squirrels`).
+
+
+```
+## # A tibble: 6 x 35
+##    long   lat unique_squirrel… hectare shift date       hectare_squirre… age   primary_fur_col…
+##   &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;            &lt;chr&gt;   &lt;chr&gt; &lt;date&gt;                &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;           
+## 1 -74.0  40.8 13A-PM-1014-04   13A     PM    2018-10-14                4 &lt;NA&gt;  Gray            
+## 2 -74.0  40.8 15F-PM-1010-06   15F     PM    2018-10-10                6 Adult Gray            
+## 3 -74.0  40.8 19C-PM-1018-02   19C     PM    2018-10-18                2 Adult Gray            
+## 4 -74.0  40.8 21B-AM-1019-04   21B     AM    2018-10-19                4 &lt;NA&gt;  &lt;NA&gt;            
+## 5 -74.0  40.8 23A-AM-1018-02   23A     AM    2018-10-18                2 Juve… Black           
+## 6 -74.0  40.8 38H-PM-1012-01   38H     PM    2018-10-12                1 Adult Gray            
+## # … with 26 more variables: highlight_fur_color &lt;chr&gt;, combination_of_primary_and_highlight_color &lt;chr&gt;,
+## #   color_notes &lt;chr&gt;, location &lt;chr&gt;, above_ground_sighter_measurement &lt;chr&gt;, specific_location &lt;chr&gt;,
+## #   running &lt;lgl&gt;, chasing &lt;lgl&gt;, climbing &lt;lgl&gt;, eating &lt;lgl&gt;, foraging &lt;lgl&gt;, other_activities &lt;chr&gt;,
+## #   kuks &lt;lgl&gt;, quaas &lt;lgl&gt;, moans &lt;lgl&gt;, tail_flags &lt;lgl&gt;, tail_twitches &lt;lgl&gt;, approaches &lt;lgl&gt;,
+## #   indifferent &lt;lgl&gt;, runs_from &lt;lgl&gt;, other_interactions &lt;chr&gt;, zip_codes &lt;dbl&gt;, community_districts &lt;dbl&gt;,
+## #   borough_boundaries &lt;dbl&gt;, city_council_districts &lt;dbl&gt;, police_precincts &lt;dbl&gt;
+```
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
