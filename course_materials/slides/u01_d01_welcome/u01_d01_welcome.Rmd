@@ -13,6 +13,11 @@ output:
       countIncrementalSlides: false
 ---
 
+```{r packages, echo=FALSE, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(emo)
+```
+
 class: inverse, mline, center, middle
 
 # What is Data Science?
@@ -191,3 +196,104 @@ knitr::include_graphics("images/r4ds_workflow.png")
   * use (statistical) models to answer your questions about the data
 * **communicate** insights
 ]
+
+---
+
+class: inverse, mline, center, middle
+
+# Let's give it a go!
+
+---
+
+# A highly topical issue ...
+
+.pull-left[
+
+```{r echo=FALSE, out.width="150%", fig.align="left"}
+knitr::include_graphics("images/covid_confirmed_linear.png")
+```
+
+]
+
+.pull-right[
+
+```{r echo=FALSE, out.width="150%", fig.align="left"}
+knitr::include_graphics("images/covid_confirmed_log.png")
+```
+
+]
+
+.font80[
+  from https://www.abc.net.au/news/2020-05-13/coronavirus-numbers-worldwide-data-tracking-charts/12107500 retrieved on 2021-01-08
+]
+
+---
+class: middle
+
+## These figures must be really tricky to generate ... right?
+
+---
+
+# Enter R and RStudio
+
+<br>
+
+* R is a programming language for statistical computing (but it can also be used for other things)
+* RStudio is an integrated development environment (IDE) for R, which is a fancy way of saying that it provides a convenient platform within which we can use R 
+
+```{r echo=FALSE, out.width="80%"}
+knitr::include_graphics("images/RStudio.png")
+```
+
+---
+
+# RStudio Cloud
+
+* For (the first part of) this course, we will be using RStudio Cloud, which is a web-based version of RStudio
+* This means that you won't have to install anything on your computer and that you will have direct access to all of the materials that I have prepared
+* Go to https://rstudio.cloud and create a login
+* Once you have done this, use the link XXX to access the CSN-RH workspace on RStudio Cloud and select the data_science_course_2021 project
+- When you access the project, you will receive your own permanent copy of it to work on
+
+---
+
+# Exercise: Cumulative Covid-related deaths
+
+.pull-left[
+* click on the document *01a_covid.Rmd*
+* this is an *RMarkdown* document which mixes text and code and is an excellent format for reproducible research reports, as we will see later
+* don't worry too much about the code for now; this is what the document looks like when rendered
+]
+
+.pull-right[
+```{r echo=FALSE, out.width="80%"}
+knitr::include_graphics("images/covid_rendered.png")
+```
+]
+
+---
+
+# Exercise: Cumulative Covid-related deaths
+
+.pull-left[
+* click on the *Knit* button at the top of the document to produce the rendered version
+* have a read-through and look at the figure at the bottom
+* there is also an inetractive table to show you which countries are in the data set
+]
+
+.pull-right[
+```{r echo=FALSE, out.width="80%"}
+knitr::include_graphics("images/covid_rendered2.png")
+```
+]
+
+---
+
+# Your turn!
+
+For each of the following challenges, go back to the raw document (i.e. the one that doesn't look pretty `r emo::ji("smile")`), try to figure out how to make the relevant change and then render the document using *Knit* to see whether you were correct!
+
+* Change *Turkey* to *Australia* in the list of countries under examination; check the figure to see if it worked
+* Use the table at the bottom of the document to find another country of interest to you and change *Australia* to that country
+* See if you can change the figure to represent cumulative deaths from the 100th rather than the 10th death
+* Examine the format of the data being looked at (hint: go to the table close to the top of the document); an alternative entry to "death" under *type* is "confirmed". Can you change the document so that the figure reflects cumulative confirmed cases rather than deaths? (This one is a bit trickier!)

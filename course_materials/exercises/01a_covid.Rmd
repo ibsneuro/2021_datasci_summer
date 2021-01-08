@@ -7,7 +7,7 @@ output:
 
 ---
 
-<!-- adapted by Ina Bornkessel-Schlesewsky from https://datasciencebox.org under a CC BY-SA 4.0 licence (https://creativecommons.org/licenses/by-sa/4.0/); original document:  https://github.com/rstudio-education/datascience-box/blob/master/course-materials/application-exercises/ae-01b-covid/covid.Rmd
+<!-- adapted from https://datasciencebox.org under a CC BY-SA 4.0 licence (https://creativecommons.org/licenses/by-sa/4.0/); original document:  https://github.com/rstudio-education/datascience-box/blob/master/course-materials/application-exercises/ae-01b-covid/covid.Rmd
 -->
 
 ## Introduction
