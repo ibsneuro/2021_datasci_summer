@@ -257,7 +257,7 @@ knitr::include_graphics("images/RStudio.png")
 
 ---
 
-# Exercise: Cumulative Covid-related deaths
+# Exercise: Covid-related deaths
 
 .pull-left[
 * click on the document *01a_covid.Rmd*
@@ -273,7 +273,7 @@ knitr::include_graphics("images/covid_rendered.png")
 
 ---
 
-# Exercise: Cumulative Covid-related deaths
+# Exercise: Covid-related deaths
 
 .pull-left[
 * click on the *Knit* button at the top of the document to produce the rendered version
