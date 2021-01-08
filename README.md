@@ -11,14 +11,8 @@ See individual files for details.
 
 #### 1.1 What is data science? / What to expect
 
-::: {.slides}
-[Slides](course_materials/slides/u01_d01_welcome/u01_d01_welcome.html)
-:::
-
-::: {.source}
-[Source](course_materials/slides/u01_d01_welcome/u01_d01_welcome.Rmd)
-:::
-
+* [Slides](course_materials/slides/u01_d01_welcome/u01_d01_welcome.html#1)
+* [Source](course_materials/slides/u01_d01_welcome/u01_d01_welcome.Rmd)
 
 #### 1.2 Let's jump right in
 
