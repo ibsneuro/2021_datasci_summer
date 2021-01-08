@@ -15,7 +15,7 @@ class: center, middle, inverse, title-slide
 # A first example
 ## Data Science for Cognitive (Neuro)Science
 ### Ina Bornkessel-Schlesewsky
-### Jan 2021 (updated: 2021-01-08)
+### Jan 2021 (updated: 2021-01-09)
 
 ---
 
@@ -101,26 +101,200 @@ I will walk you through each step in detail later.)
 
 # What's in the data?
 
-The `nycsquirrels18` package contains the squirrel census dataset (called `squirrels`).
+The `nycsquirrels18` package contains the squirrel census data set (called `squirrels`).
+
+&lt;br&gt;
+
+&lt;img src="images/squirrel_data.png" width="100%" /&gt;
+
+---
+
+# What's in the data?
+
+&lt;br&gt;
 
 
+```r
+# Get help by viewing the R documentation -- in this case, information about the variables in the dataset
+# Note that this doesn't produce any output in the html document
+# It will, however, show up in RStudio if you run this command in the console
+?squirrels
 ```
-## # A tibble: 6 x 35
-##    long   lat unique_squirrel… hectare shift date       hectare_squirre… age   primary_fur_col…
-##   &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;            &lt;chr&gt;   &lt;chr&gt; &lt;date&gt;                &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;           
-## 1 -74.0  40.8 13A-PM-1014-04   13A     PM    2018-10-14                4 &lt;NA&gt;  Gray            
-## 2 -74.0  40.8 15F-PM-1010-06   15F     PM    2018-10-10                6 Adult Gray            
-## 3 -74.0  40.8 19C-PM-1018-02   19C     PM    2018-10-18                2 Adult Gray            
-## 4 -74.0  40.8 21B-AM-1019-04   21B     AM    2018-10-19                4 &lt;NA&gt;  &lt;NA&gt;            
-## 5 -74.0  40.8 23A-AM-1018-02   23A     AM    2018-10-18                2 Juve… Black           
-## 6 -74.0  40.8 38H-PM-1012-01   38H     PM    2018-10-12                1 Adult Gray            
-## # … with 26 more variables: highlight_fur_color &lt;chr&gt;, combination_of_primary_and_highlight_color &lt;chr&gt;,
-## #   color_notes &lt;chr&gt;, location &lt;chr&gt;, above_ground_sighter_measurement &lt;chr&gt;, specific_location &lt;chr&gt;,
-## #   running &lt;lgl&gt;, chasing &lt;lgl&gt;, climbing &lt;lgl&gt;, eating &lt;lgl&gt;, foraging &lt;lgl&gt;, other_activities &lt;chr&gt;,
-## #   kuks &lt;lgl&gt;, quaas &lt;lgl&gt;, moans &lt;lgl&gt;, tail_flags &lt;lgl&gt;, tail_twitches &lt;lgl&gt;, approaches &lt;lgl&gt;,
-## #   indifferent &lt;lgl&gt;, runs_from &lt;lgl&gt;, other_interactions &lt;chr&gt;, zip_codes &lt;dbl&gt;, community_districts &lt;dbl&gt;,
-## #   borough_boundaries &lt;dbl&gt;, city_council_districts &lt;dbl&gt;, police_precincts &lt;dbl&gt;
+
+***
+
+From this initial exploration, we can see that the data frame contains 35 variables and 3023 observations.
+
+We will start exploring the data by looking at the following five variables (descriptions on the next slide are taken from the R documentation):
+
+---
+
+# Variables of interest
+
+&lt;br&gt;
+
+- **hectare**: ID tag, which is derived from the hectare grid used to divide and count the park area. One axis that runs predominantly north-to-south is numerical (1-42), and the axis that runs predominantly east-to-west is roman characters (A-I).
+- **shift**: Value is either "AM" or "PM," to communicate whether or not the sighting session occurred in the morning or late afternoon.
+- **date**: Concatenation of the sighting session day and month.
+- **age**: Value is either "Adult" or "Juvenile."
+- **primary_fur_color**: Value is either "Gray," "Cinnamon" or "Black."
+
+---
+
+# A first look at the data
+
+&lt;img src="u01_d02_squirrels_example_files/figure-html/unnamed-chunk-7-1.png" width="70%" /&gt;
+
+---
+
+# An alternative using lines
+
+&lt;img src="u01_d02_squirrels_example_files/figure-html/unnamed-chunk-8-1.png" width="70%" /&gt;
+
+---
+
+# Let's look at additional variables
+
+.pull-left[
+* e.g. sighting (am/pm)
+* recall that this is coded in the variable "shift" 
+
+This graph already gives us some idea that squirrels can generally be seen in both the morning and late afternoon.
+
+Good news for our itinerary, since it means that we could slot in a visit either in the morning or the afternoon!
+
+.font80[
+(While on some days, more squirrels were sighted during the pm shift, we would probably want to see data from a longer time period to confirm that this is indeeed a systematic pattern.)
+]
+]
+
+.pull-right[
+&lt;img src="u01_d02_squirrels_example_files/figure-html/unnamed-chunk-9-1.png" width="100%" /&gt;
+]
+
+---
+
+# Exploration also revealed ...
+
+&lt;br&gt;
+
+* more details on the time frame during which the data were collected (Oct 6--20)
+* why there is such a high degree of fluctuation across days - some with 0 sightings and some with over 400?
+* should lead us to examine the data set further
+* e.g. did the volunteers only go out on certain days?
+* or were there indeed days with over 300 volunteers in the park and no sightings at all?
+* (or did the number of volunteers vary from day to day?)
+
+---
+
+# Sightings per day - follow-up I
+
+&lt;br&gt;
+
+.pull-left[
+* why no sightings on certain days?
+* let's add day of the week to see if this can shed any light on what's going on
+
+.font80[
+Note that we can let R look this information up for us -- no need to add it manually.
+]
+
+* the intermediary counts of 0 occurred on a Tuesday, Thursday, Monday and Tuesday
+* no clear pattern
+]
+
+.pull-right[
+
+&lt;img src="u01_d02_squirrels_example_files/figure-html/unnamed-chunk-10-1.png" width="100%" /&gt;
+
+]
+
+---
+
+# Sightings per day - follow-up II
+
+* weather patterns also don't provide an explanation, as revealed by NYC weather records from October 2018
+
+.font80[
+Alas, I had to look these up manually via [this website](https://www.timeanddate.com/weather/usa/new-york/historic?month=10&amp;year=2018)!
+]
+
+
+&lt;img src="images/nyc_weather_oct2018.png" width="100%" /&gt;
+
+---
+
+# Where am I most likely to see a squirrel?
+
+.pull-left[
+* for a first look, we can look at the number of sightings per hectare
+* we first summarise counts per hectare
+
+
+]
+
+.pull-right[
+
 ```
+## # A tibble: 339 x 2
+##    hectare     n
+##    &lt;chr&gt;   &lt;int&gt;
+##  1 01A        11
+##  2 01B        27
+##  3 01C        12
+##  4 01D        16
+##  5 01E         8
+##  6 01F         8
+##  7 01G         7
+##  8 01H         4
+##  9 01I         4
+## 10 02A        15
+## # … with 329 more rows
+```
+]
+
+---
+
+# Where am I most likely to see a squirrel?
+
+&lt;img src="u01_d02_squirrels_example_files/figure-html/unnamed-chunk-14-1.png" width="70%" /&gt;
+
+---
+
+# A more informative version
+
+.pull-left[
+* counts per hectare are not very informative (339 hectares!)
+* let's divide these into the two grid dimensions:
+  * N-S: 1-42
+  * E-W: A-I
+]
+
+.pull-right[
+
+```
+## # A tibble: 339 x 4
+##    hectare     n NS    EW   
+##    &lt;chr&gt;   &lt;int&gt; &lt;chr&gt; &lt;chr&gt;
+##  1 01A        11 01    A    
+##  2 01B        27 01    B    
+##  3 01C        12 01    C    
+##  4 01D        16 01    D    
+##  5 01E         8 01    E    
+##  6 01F         8 01    F    
+##  7 01G         7 01    G    
+##  8 01H         4 01    H    
+##  9 01I         4 01    I    
+## 10 02A        15 02    A    
+## # … with 329 more rows
+```
+]
+
+---
+
+# Squirrel hotspots!
+
+&lt;img src="u01_d02_squirrels_example_files/figure-html/unnamed-chunk-16-1.png" width="150%" /&gt;
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
