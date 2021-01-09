@@ -1,0 +1,137 @@
+---
+title: Basic introduction to data exploration / visualisation using data from the
+  coronavirus package
+author: "Ina Bornkessel-Schlesewsky"
+output: html_document
+---
+
+```{r load_packages, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(Hmisc)
+library(coronavirus)
+library(emo)
+
+# ignore the following code for now -- it will be explained later!
+coronavirus <- coronavirus %>% 
+  as_tibble()
+```
+
+## R Markdown
+
+This is an R Markdown document. It mixes text and analysis code and can be used to easily produce reports such as the one on cumulative Covid-related deaths that we saw earlier. It is also useful for your own data analysis workflow, as it allows you to keep notes on your analysis and the analysis code in the same document. As we will see later, this is extremely useful for a reproducible workflow.
+
+From the RStudio RMarkdown template:
+
+> Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+> When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document.
+
+We will look at how Markdown works in more detail later on in the course. For now, just be aware that anything you type outside of the R chunks will be rendered as text and anything inside the chunks will be run as code.
+
+You can embed an R code chunk like this:
+
+```{r coronavirus_data}
+# Within a chunk, anything preceded by a hash is a comment
+# Anything else is actual code and will be run when you knit the document
+# The following line of code shows us the first six rows of the coronavirus data frame 
+head(coronavirus)
+```
+
+The chunk of code above illustrates an important basic principle of how R works: a command or function -- also known as a "verb" -- (`head` in this example) is applied to an object (the data frame `coronavirus`). This manipulates the object in some way: in the case of `head`, outputting the first few lines of a data frame.
+
+To get more information on a function, type `?function` into the RStudio console. Try this for `?head`.
+
+## Start exploring the *coronavirus* data
+
+When you start working with a new data set, you need to understand the structure and content of the data, i.e. what is the shape of the data frame (how many columns and rows) and what does the content of the different columns look like?
+
+R provides the in-built function `summary` for this, which is particularly useful for numeric columns. To get a bit more detail, we also use the function `describe` from the `Hmisc` package.
+Note the similar syntax to what we did with `head` above: we're simply applying different functions to the same object (i.e. doing different "stuff" with it `r emo::ji("wink")`).
+
+Note also the notation of referring to columns as *variables* and rows as *observations* -- once again, more on this later.
+
+```{r summarise_data}
+summary(coronavirus)
+
+describe(coronavirus)
+
+```
+
+We know now that `coronavirus` contains data from January 2020 to January 2021 for 191 different countries and that it provides information (via the variable `type`) on the number of confirmed cases, deaths and recovered cases. 
+
+### Confirmed cases in South Australia
+
+Let's say we're interested in the number of confirmed cases in South Australia over time. To do this, we need to know how to extract subsets of the data. This is done using the verb `filter`, which serves to select certain rows according to a specified criterion.
+
+First, let's try extracting all observations for South Australia. Here, the pipe operator (%>%) directs the `gapminder` data set to the `filter` command. Note that we're not changing the original dataframe, we're just selecting observations and printing the result. `filter` and the other data transformation commands that we use below are loaded as part of the `tidyverse` package (technically speaking, they're part of the `dplyr` package, which is one of the packages making up the overall `tidyverse`). We will generally load the full `tidyverse` for convenience.
+
+```{r basic_filtering}
+coronavirus %>% 
+  filter(province == "South Australia")
+```
+
+We can do the same to isolate just the confirmed cases by filtering on *type*.
+
+```{r basic_filtering2}
+coronavirus %>% 
+  filter(type == "confirmed")
+```
+
+But we of course want to combine both of these criteria to look at all confirmed cases in South Australia. This is easy to do:
+
+```{r combined_filtering}
+coronavirus %>% 
+  filter(province == "South Australia" & type == "confirmed")
+```
+
+We want to do some more exploration on this particular subset of the data. So let's save it as a new object using the assignment operator `<-`. Note how the syntax is exactly the same as above except for the fact that we're saving the output as a new object `SA_confirmed` using `<-`.
+
+```{r create_new_object}
+
+SA_confirmed <- coronavirus %>% 
+  filter(province == "South Australia" & type == "confirmed")
+
+```
+
+With our new data frame `SA_confirmed`, we can now start asking some more useful questions. For example, we can look at only those days where SA recorded confirmed cases -- again using `filter`.
+
+```{r SA_above_0_confirmed}
+
+SA_confirmed %>% 
+  filter(cases > 0)
+
+```
+
+This shows that we actually recorded our first case at the beginning of February 2020. This was quite surprising to me!
+
+What if we want to look at the worst days in terms of the number of confirmed cases? The easiest way to do this is to sort by the number of cases using the `arrange` verb. Note how the syntax is exactly the same as for `filter`: the only thing that changes is the operation conducted.
+
+```{r basic_arrange}
+
+SA_confirmed %>% 
+  arrange(cases)
+```
+
+Sorting by the number of confirmed cases shows that there were negative case numbers on some days ... What's going on here? `r emo::ji("thinking")` If we were doing a real analysis of these data, we would probably want to figure this out before proceeding!
+
+*Exercise: See if you can figure out what the negative numbers mean. Hint: you can get more information on the data and their source by typing `?coronavirus` into the console.*
+
+What we would really like to do is sort in a descending order (i.e. with the highest number of cases at the top). This is easily done by adding a *-*.
+
+```{r basic_arrange2}
+
+SA_confirmed %>% 
+  arrange(-cases)
+```
+
+Note that we can also sequence verbs such as `filter` and `arrange`. If we wanted to extract observations where there had been > 0 deaths in Victoria, for example, this is easily accomplished:
+
+```{r victoria_deaths}
+coronavirus %>% 
+  filter(province == "Victoria" & type == "death" & cases > 0) %>% 
+  arrange(-cases)
+
+```
+
+*Exercise: insert a new chunk of R code and modify it to show the same data as above but for South Australia. How does the worst day for deaths in SA compare to that in VIC?*
+

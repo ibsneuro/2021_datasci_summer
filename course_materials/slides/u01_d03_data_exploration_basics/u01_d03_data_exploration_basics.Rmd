@@ -1,0 +1,26 @@
+---
+title: "Data exploration basics"
+subtitle: "Data Science for Cognitive (Neuro)Science"
+author: "Ina Bornkessel-Schlesewsky"
+date: "Jan 2021 (updated: `r Sys.Date()`)"
+output:
+  xaringan::moon_reader:
+    css: [default, metropolis, metropolis-fonts]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r packages, echo=FALSE, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(emo)
+library(coronavirus)
+```
+
+class: inverse, mline, center, middle
+
+# Data exploration and visualisation: first steps
+
+---
