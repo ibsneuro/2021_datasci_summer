@@ -43,6 +43,8 @@ To get more information on a function, type `?function` into the RStudio console
 
 ## Start exploring the *coronavirus* data
 
+### Understanding the structure of the data
+
 When you start working with a new data set, you need to understand the structure and content of the data, i.e. what is the shape of the data frame (how many columns and rows) and what does the content of the different columns look like?
 
 R provides the in-built function `summary` for this, which is particularly useful for numeric columns. To get a bit more detail, we also use the function `describe` from the `Hmisc` package.
@@ -59,7 +61,7 @@ describe(coronavirus)
 
 We know now that `coronavirus` contains data from January 2020 to January 2021 for 191 different countries and that it provides information (via the variable `type`) on the number of confirmed cases, deaths and recovered cases. 
 
-### Confirmed cases in South Australia
+### Extracting subsets of data: confirmed cases in South Australia
 
 Let's say we're interested in the number of confirmed cases in South Australia over time. To do this, we need to know how to extract subsets of the data. This is done using the verb `filter`, which serves to select certain rows according to a specified criterion.
 
@@ -69,6 +71,8 @@ First, let's try extracting all observations for South Australia. Here, the pipe
 coronavirus %>% 
   filter(province == "South Australia")
 ```
+
+Note: the "==" here is a logical equals, which is what we use when we look at an equivalence of values.
 
 We can do the same to isolate just the confirmed cases by filtering on *type*.
 
@@ -104,6 +108,10 @@ SA_confirmed %>%
 
 This shows that we actually recorded our first case at the beginning of February 2020. This was quite surprising to me!
 
+Also note the difference between filtering for numeric variables such as *cases* and character variables such as *province*. A value for *province* (such as *South Australia* needs to be enclosed in quotes as it is a character string. A value for *cases* (such as 0), by contrast, is numeric and doesn't need to be enclosed in quotes.
+
+### Sorting data: days with the highest numbers of confirmed cases
+
 What if we want to look at the worst days in terms of the number of confirmed cases? The easiest way to do this is to sort by the number of cases using the `arrange` verb. Note how the syntax is exactly the same as for `filter`: the only thing that changes is the operation conducted.
 
 ```{r basic_arrange}
@@ -116,7 +124,7 @@ Sorting by the number of confirmed cases shows that there were negative case num
 
 *Exercise: See if you can figure out what the negative numbers mean. Hint: you can get more information on the data and their source by typing `?coronavirus` into the console.*
 
-What we would really like to do is sort in a descending order (i.e. with the highest number of cases at the top). This is easily done by adding a *-*.
+What we would really like to do is sort in a descending order (i.e. with the highest number of cases at the top). This is easily done by adding a minus sign (*-*).
 
 ```{r basic_arrange2}
 
@@ -124,7 +132,9 @@ SA_confirmed %>%
   arrange(-cases)
 ```
 
-Note that we can also sequence verbs such as `filter` and `arrange`. If we wanted to extract observations where there had been > 0 deaths in Victoria, for example, this is easily accomplished:
+### Combining operations
+
+Note that we can also sequence verbs such as `filter` and `arrange`. If we wanted to extract observations where there had been > 0 deaths in Victoria, for example, and then sort in descending order, this is easily accomplished:
 
 ```{r victoria_deaths}
 coronavirus %>% 
@@ -134,4 +144,49 @@ coronavirus %>%
 ```
 
 *Exercise: insert a new chunk of R code and modify it to show the same data as above but for South Australia. How does the worst day for deaths in SA compare to that in VIC?*
+
+### Other verbs: `select` and `mutate` 
+
+*Note: if you're feeling a bit overwhelmed at this point, you can just skip this section for now and come back to it later.*
+
+Another possibility is to select variables using `select`. This is useful when you are reading in a big data set with many variables that you don't need. In our case, we might not be interested in latitude and longitude values, for example, and thus want to remove these columns. To do this, we apply `select` to the variables that we want to keep:
+
+```{r select_example1}
+coronavirus %>% 
+  select(date, province, country, type, cases)
+
+```
+
+Alternatively, we can specify the variables that we want to "deselect" by using a minus sign:
+
+```{r select_example2}
+coronavirus %>% 
+  select(-lat, -long)
+
+```
+
+Let's say we now wanted to normalise the number of confirmed cases by population for better comparability. To do this, we use `mutate` to create a new variable *cases_norm*, drawing on a population estimate of 1,769,319 for SA (estimated population in June 2020 according to [Wikipedia](https://en.wikipedia.org/wiki/South_Australia):
+
+```{r confirmed_cases_normalised_sa}
+coronavirus %>% 
+  # only keep observations with cases > 0 to reduce the amount of data
+  filter(province == "South Australia" & type == "confirmed" & cases > 0) %>% 
+  mutate(cases_norm = cases / 1769319)
+```
+
+From this, we can calculate incidence rates, e.g. per 100,000 people. Note how we can create multiple new variables with only one use of `mutate` and how the second variable created can draw on the first.  
+
+```{r confirmed_cases_incidence_sa}
+coronavirus %>% 
+  # only keep observations with cases > 0 to reduce the amount of data
+  filter(province == "South Australia" & type == "confirmed" & cases > 0) %>% 
+  mutate(cases_norm = cases / 1769319,
+         incidence = cases_norm * 100000) %>% 
+  arrange(-incidence)
+```
+
+*Exercise: calculate the incidence rate of confirmed Covid cases per 100,000 population for another state of your choice. How does it compare to the one for SA?*
+
+## Basic data visulisation
+
 
