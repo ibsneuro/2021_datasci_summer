@@ -145,11 +145,99 @@ coronavirus %>%
 
 *Exercise: insert a new chunk of R code and modify it to show the same data as above but for South Australia. How does the worst day for deaths in SA compare to that in VIC?*
 
+## Basic data visualisation
+
+Visualisation is one of the most powerful tools for exploring and understanding what's in your data. It is also incredibly important when it comes to communicating the results of your analysis: as the saying goes, "a picture is worth a thousand words"! Luckily, R -- and specifically the `ggplot2` package (also part of the tidyverse) -- makes it easy to produce beautiful, publication-quality plots, even for those of us who are not natural graphic designers at heart (like me! `r emo::ji("sunglasses")`). Let's take it for a spin!
+
+We'll start with a simple example: how did the number of confirmed Covid cases in South Australia develop over time?
+
+```{r plot_confirmed_cases_SA}
+
+ggplot(data = SA_confirmed, aes(x = date, y = cases)) +
+  geom_col()
+
+```
+
+Basic ggplot syntax: you need to specify the data (i.e. *SA_confirmed* in this case) and the aesthetics (`aes`): these are the visual dimensions of a graph that are used to communicate information. You need to specify how the data map onto these dimensions, e.g. here: *date* maps onto the x-axis and *cases* onto the y-axis. We then add a geometric object layer using `geom_*`; here, we use `geom_col`, which produces a bar chart that represents values in the data. There's lots of other options as we shall see. Note that we use the plus sign (*+*) here to add the geom layer rather than the pipe (*%>%*), as we're **adding** a layer rather than channelling an object to a new command. 
+
+Overall then, our plot is composed of the data, the aes mapping and a layer specifying the geometric object.
+
+By changing the type of geom, we can change the type of graph. It is super easy to change to a line graph, for example, by using `geom_line`:
+
+```{r plot_confirmed_cases_SA_line}
+
+ggplot(data = SA_confirmed, aes(x = date, y = cases)) +
+  geom_line()
+
+```
+
+Note how the syntax is exactly the same as before -- we merely change our choice of geom!
+
+`ggplot` also makes it easy to compare different groups, for example the timeline of confirmed cases across different states. We start by using colour to distinguish groups.
+
+```{r plot_confirmed_cases_by_state}
+# create a new data frame that only includes confirmed cases in Australia
+AUS_confirmed <- coronavirus %>% 
+  filter(country == "Australia" & type == "confirmed")
+
+# note how we can easily distinguish groups by colour, simply by adding the colour aesthetic
+ggplot(data = AUS_confirmed, aes(x = date, y = cases, colour = province)) + 
+  geom_line()
+
+```
+
+Another way to distinguish groups is to use facets, i.e. a separate graph per group. This is done in a slightly different way:
+
+```{r plot_confirmed_cases_by_state_facet}
+ggplot(data = AUS_confirmed, aes(x = date, y = cases)) + 
+  geom_line() +
+  facet_wrap(~ province)
+
+```
+
+We can also combine both colour and faceting!
+
+```{r plot_confirmed_cases_by_state_facet2}
+ggplot(data = AUS_confirmed, aes(x = date, y = cases, colour = province)) + 
+  geom_line() +
+  facet_wrap(~ province)
+
+```
+
+Notice how the inclusion of the legend messes up our x-axis labels a bit. We will see how to fix this later, when we discuss the customisation of plots.
+
+For now, we will finish by looking at how to enhance your plot by adding a title, changing axis labels etc. and how to save to a publication-quality image file.
+
+```{r plot_with_title_etc}
+
+ggplot(data = AUS_confirmed, aes(x = date, y = cases, colour = province)) + 
+  geom_line() +
+  ggtitle("Confirmed Covid-19 cases in Australia by state") +
+  xlab("Date") +
+  ylab("Daily cases")
+
+# you can easily save the last plot created by using ggsave
+# and voilà, you have a publication-quality figure!
+ggsave("confirmed_cases_by_state.jpg", width = 180, units = "mm", dpi = 300)
+
+```
+
+
 ### Other verbs: `select` and `mutate` 
 
 *Note: if you're feeling a bit overwhelmed at this point, you can just skip this section for now and come back to it later.*
 
-Another possibility is to select variables using `select`. This is useful when you are reading in a big data set with many variables that you don't need. In our case, we might not be interested in latitude and longitude values, for example, and thus want to remove these columns. To do this, we apply `select` to the variables that we want to keep:
+So far, we have seen that just two verbs -- `filter`, `arrange` (and their combination) -- already provide us with lots of powerful options for data exploration. However, these are just two of six core verbs in the `dplyr` package (part of the `tidyverse`). As outlined [here](https://dplyr.tidyverse.org), these are a "consistent set of verbs that help you solve the most common data manipulation challenges":
+
+* `filter()` -- select cases based on values
+* `arrange()` -- reorder rows
+* `select()` -- select variables based on names
+* `mutate()` -- add new variables as a function of existing ones
+* `summarise()` -- reduce multiple values to a summary statistic
+
+Here, we briefly examine `select` and `mutate`.
+
+As its name suggests, `select` lets you select variables based on their names. This is useful, for example, when you are reading in a big data set with many variables that you don't need. In our case, we might not be interested in latitude and longitude values, for example, and thus want to remove these columns. To do this, we apply `select` to the variables that we want to keep:
 
 ```{r select_example1}
 coronavirus %>% 
@@ -185,8 +273,11 @@ coronavirus %>%
   arrange(-incidence)
 ```
 
-*Exercise: calculate the incidence rate of confirmed Covid cases per 100,000 population for another state of your choice. How does it compare to the one for SA?*
+#### Exercises
 
-## Basic data visulisation
+*Exercise 1: calculate the incidence rate of confirmed Covid cases per 100,000 population for another state of your choice. How does it compare to the one for SA?*
+
+*Exercise 2: calculate the incidence rate (as above) for all Australian observations and then plot the incidence rate across time by state* 
+
 
 
