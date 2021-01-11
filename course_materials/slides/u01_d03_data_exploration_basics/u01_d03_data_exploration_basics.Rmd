@@ -51,3 +51,28 @@ Adapted from https://github.com/rstudio-education/datascience-box/blob/master/co
 ```{r echo=FALSE, out.width="100%"}
 knitr::include_graphics("images/rstudio.png")
 ```
+
+---
+# R console
+
+.pull-left[
+* this is where the "magic happens", i.e. where the calculations take place
+* think of a calculator on steroids `r emo::ji("joy")`
+* we can interact with the console directly (see example)
+* mostly, however, we will be working with scripted input
+
+```{r echo=FALSE, out.width="80%"}
+knitr::include_graphics("images/console.png")
+```
+
+]
+
+.pull-right[
+
+```{r echo=FALSE, out.width="80%"}
+knitr::include_graphics("images/calculator.jpg")
+```
+.font60[
+Cjp24 [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0), via Wikimedia Commons
+]
+]
