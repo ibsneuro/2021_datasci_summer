@@ -2,7 +2,11 @@
 title: Basic introduction to data exploration / visualisation using data from the
   coronavirus package
 author: "Ina Bornkessel-Schlesewsky"
-output: html_document
+output: 
+  html_document:
+    toc: yes
+    toc_float: yes
+  
 ---
 
 ```{r load_packages, message=FALSE, warning=FALSE}
@@ -223,7 +227,7 @@ ggsave("confirmed_cases_by_state.jpg", width = 180, units = "mm", dpi = 300)
 ```
 
 
-### Other verbs: `select` and `mutate` 
+## Other verbs: `select` and `mutate` 
 
 *Note: if you're feeling a bit overwhelmed at this point, you can just skip this section for now and come back to it later.*
 
@@ -273,7 +277,7 @@ coronavirus %>%
   arrange(-incidence)
 ```
 
-#### Exercises
+## Exercises
 
 *Exercise 1: calculate the incidence rate of confirmed Covid cases per 100,000 population for another state of your choice. How does it compare to the one for SA?*
 
