@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Importing data</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Ina Bornkessel-Schlesewsky" />
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/metropolis.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/metropolis-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Importing data
+## Data Science for Cognitive (Neuro)Science
+### Ina Bornkessel-Schlesewsky
+### Jan 2021 (updated: 2021-01-14)
+
+---
+
+
+
+
+---
+
+# NYC squirrels revisited!
+
+&lt;br&gt;
+
+* Typically, the data we work with aren't available as R packages
+* Rather, we need to read them in from a file
+* csv is a popular format
+  * comma separated values
+  * plain text
+  * can be exported from all popular spreadsheet applications (e.g. Excel)
+  * (+ is accessible without any proprietary software, allows for version control etc. -- more on this later ...)
+* Let's try importing the squirrels data from a csv file (i.e. in the form in which it can be downloaded from the *NYC Open Data* website)
+
+---
+
+# Importing a csv file
+
+* there are various ways to do this in R
+* we will use the `read_csv()` function from the `readr` package (part of the `tidyverse`)
+
+
+```r
+squirrels &lt;- read_csv("data/2018_Central_Park_Squirrel_Census_-_Squirrel_Data.csv")
+```
+
+```
+## 
+## ── Column specification ──────────────────────────────────────────────────────────────────────────────────────
+## cols(
+##   .default = col_character(),
+##   X = col_double(),
+##   Y = col_double(),
+##   Date = col_double(),
+##   `Hectare Squirrel Number` = col_double(),
+##   Running = col_logical(),
+##   Chasing = col_logical(),
+##   Climbing = col_logical(),
+##   Eating = col_logical(),
+##   Foraging = col_logical(),
+##   Kuks = col_logical(),
+##   Quaas = col_logical(),
+##   Moans = col_logical(),
+##   `Tail flags` = col_logical(),
+##   `Tail twitches` = col_logical(),
+##   Approaches = col_logical(),
+##   Indifferent = col_logical(),
+##   `Runs from` = col_logical(),
+##   `Zip Codes` = col_double(),
+##   `Community Districts` = col_double(),
+##   `Borough Boundaries` = col_double()
+##   # ... with 2 more columns
+## )
+## ℹ Use `spec()` for the full column specifications.
+```
+
+---
+
+# Inspect the data
+
+
+```r
+head(squirrels, n = 2)
+```
+
+```
+## # A tibble: 2 x 36
+##       X     Y `Unique Squirre… Hectare Shift   Date `Hectare Squirr… Age   `Primary Fur Co… `Highlight Fur …
+##   &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;            &lt;chr&gt;   &lt;chr&gt;  &lt;dbl&gt;            &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;            &lt;chr&gt;           
+## 1 -74.0  40.8 37F-PM-1014-03   37F     PM    1.01e7                3 &lt;NA&gt;  &lt;NA&gt;             &lt;NA&gt;            
+## 2 -74.0  40.8 37E-PM-1006-03   37E     PM    1.01e7                3 Adult Gray             Cinnamon        
+## # … with 26 more variables: `Combination of Primary and Highlight Color` &lt;chr&gt;, `Color notes` &lt;chr&gt;,
+## #   Location &lt;chr&gt;, `Above Ground Sighter Measurement` &lt;chr&gt;, `Specific Location` &lt;chr&gt;, Running &lt;lgl&gt;,
+## #   Chasing &lt;lgl&gt;, Climbing &lt;lgl&gt;, Eating &lt;lgl&gt;, Foraging &lt;lgl&gt;, `Other Activities` &lt;chr&gt;, Kuks &lt;lgl&gt;,
+## #   Quaas &lt;lgl&gt;, Moans &lt;lgl&gt;, `Tail flags` &lt;lgl&gt;, `Tail twitches` &lt;lgl&gt;, Approaches &lt;lgl&gt;, Indifferent &lt;lgl&gt;,
+## #   `Runs from` &lt;lgl&gt;, `Other Interactions` &lt;chr&gt;, `Lat/Long` &lt;chr&gt;, `Zip Codes` &lt;dbl&gt;, `Community
+## #   Districts` &lt;dbl&gt;, `Borough Boundaries` &lt;dbl&gt;, `City Council Districts` &lt;dbl&gt;, `Police Precincts` &lt;dbl&gt;
+```
+
+* interactively in RStudio, you can also use `view(squirrels)` for a spreadsheet-type visualisation
+
+---
+
+# Variable types
+
+* R guesses the variable type based on the first 1000 observations
+* Common types include *dbl* (double, a number); *chr* (character, often also referred to as "strings"), *lgl* (logical, TRUE/FALSE)
+* We may want to convert some character variables to factors (i.e. categorical variables with known set of possible values, "levels") at a later point
+* Columns that only contain numbers will be classed as *dbl*, as soon as any entry contains even a single non-numeric character, the column will be classed as *chr* (cf. "Unique Squirrel ID")
+  * this is important to know if, for any reason, your numerical variables contain characters, e.g. to code missing values; `NA`, which is R's internal code for missing values, is an exception
+  * note also that `read_csv` has correctly filled in `NAs` in the squirrels data where there were empty cells
+* If you have a large dataset where the values change in some way after the first 1000 observations, this might produce an error later on due to a misclassification of your variables
+
+---
+
+# Challenges I: variable names
+
+* Some variables have spaces in their names
+* This is cumbersome, as we would always have to enclose the variable name in single backward quotes
+* Try out what happens when you omit the quotation marks or use a different type of quotation marks
+
+
+```r
+squirrels %&gt;%
+  filter(`Primary Fur Color` == "Gray")
+```
+
+```
+## # A tibble: 2,473 x 36
+##        X     Y `Unique Squirre… Hectare Shift   Date `Hectare Squirr… Age   `Primary Fur Co… `Highlight Fur …
+##    &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;            &lt;chr&gt;   &lt;chr&gt;  &lt;dbl&gt;            &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;            &lt;chr&gt;           
+##  1 -74.0  40.8 37E-PM-1006-03   37E     PM    1.01e7                3 Adult Gray             Cinnamon        
+##  2 -74.0  40.8 5D-PM-1018-05    05D     PM    1.02e7                5 Juve… Gray             &lt;NA&gt;            
+##  3 -74.0  40.8 33H-AM-1019-02   33H     AM    1.02e7                2 Juve… Gray             Cinnamon        
+##  4 -74.0  40.8 6G-PM-1020-02    06G     PM    1.02e7                2 Adult Gray             &lt;NA&gt;            
+##  5 -74.0  40.8 35C-PM-1013-03   35C     PM    1.01e7                3 &lt;NA&gt;  Gray             Cinnamon        
+##  6 -74.0  40.8 7B-AM-1008-09    07B     AM    1.01e7                9 Adult Gray             &lt;NA&gt;            
+##  7 -74.0  40.8 32E-PM-1017-14   32E     PM    1.02e7               14 Adult Gray             &lt;NA&gt;            
+##  8 -74.0  40.8 13E-AM-1017-05   13E     AM    1.02e7                5 Adult Gray             Cinnamon        
+##  9 -74.0  40.8 36H-AM-1010-02   36H     AM    1.01e7                2 Adult Gray             &lt;NA&gt;            
+## 10 -74.0  40.8 33F-AM-1008-02   33F     AM    1.01e7                2 Adult Gray             &lt;NA&gt;            
+## # … with 2,463 more rows, and 26 more variables: `Combination of Primary and Highlight Color` &lt;chr&gt;, `Color
+## #   notes` &lt;chr&gt;, Location &lt;chr&gt;, `Above Ground Sighter Measurement` &lt;chr&gt;, `Specific Location` &lt;chr&gt;,
+## #   Running &lt;lgl&gt;, Chasing &lt;lgl&gt;, Climbing &lt;lgl&gt;, Eating &lt;lgl&gt;, Foraging &lt;lgl&gt;, `Other Activities` &lt;chr&gt;,
+## #   Kuks &lt;lgl&gt;, Quaas &lt;lgl&gt;, Moans &lt;lgl&gt;, `Tail flags` &lt;lgl&gt;, `Tail twitches` &lt;lgl&gt;, Approaches &lt;lgl&gt;,
+## #   Indifferent &lt;lgl&gt;, `Runs from` &lt;lgl&gt;, `Other Interactions` &lt;chr&gt;, `Lat/Long` &lt;chr&gt;, `Zip Codes` &lt;dbl&gt;,
+## #   `Community Districts` &lt;dbl&gt;, `Borough Boundaries` &lt;dbl&gt;, `City Council Districts` &lt;dbl&gt;, `Police
+## #   Precincts` &lt;dbl&gt;
+```
+
+---
+
+# Challenges I: variable names
+
+* We can fix this by renaming the variable using the `rename` function
+* Note how I've changed the spelling of "colour" at the same time
+
+
+```r
+squirrels &lt;- squirrels %&gt;%
+  rename(primary_fur_colour = `Primary Fur Color`)
+
+squirrels %&gt;%
+  filter(primary_fur_colour == "Gray")
+```
+
+```
+## # A tibble: 2,473 x 36
+##        X     Y `Unique Squirre… Hectare Shift   Date `Hectare Squirr… Age   primary_fur_col… `Highlight Fur …
+##    &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;            &lt;chr&gt;   &lt;chr&gt;  &lt;dbl&gt;            &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;            &lt;chr&gt;           
+##  1 -74.0  40.8 37E-PM-1006-03   37E     PM    1.01e7                3 Adult Gray             Cinnamon        
+##  2 -74.0  40.8 5D-PM-1018-05    05D     PM    1.02e7                5 Juve… Gray             &lt;NA&gt;            
+##  3 -74.0  40.8 33H-AM-1019-02   33H     AM    1.02e7                2 Juve… Gray             Cinnamon        
+##  4 -74.0  40.8 6G-PM-1020-02    06G     PM    1.02e7                2 Adult Gray             &lt;NA&gt;            
+##  5 -74.0  40.8 35C-PM-1013-03   35C     PM    1.01e7                3 &lt;NA&gt;  Gray             Cinnamon        
+##  6 -74.0  40.8 7B-AM-1008-09    07B     AM    1.01e7                9 Adult Gray             &lt;NA&gt;            
+##  7 -74.0  40.8 32E-PM-1017-14   32E     PM    1.02e7               14 Adult Gray             &lt;NA&gt;            
+##  8 -74.0  40.8 13E-AM-1017-05   13E     AM    1.02e7                5 Adult Gray             Cinnamon        
+##  9 -74.0  40.8 36H-AM-1010-02   36H     AM    1.01e7                2 Adult Gray             &lt;NA&gt;            
+## 10 -74.0  40.8 33F-AM-1008-02   33F     AM    1.01e7                2 Adult Gray             &lt;NA&gt;            
+## # … with 2,463 more rows, and 26 more variables: `Combination of Primary and Highlight Color` &lt;chr&gt;, `Color
+## #   notes` &lt;chr&gt;, Location &lt;chr&gt;, `Above Ground Sighter Measurement` &lt;chr&gt;, `Specific Location` &lt;chr&gt;,
+## #   Running &lt;lgl&gt;, Chasing &lt;lgl&gt;, Climbing &lt;lgl&gt;, Eating &lt;lgl&gt;, Foraging &lt;lgl&gt;, `Other Activities` &lt;chr&gt;,
+## #   Kuks &lt;lgl&gt;, Quaas &lt;lgl&gt;, Moans &lt;lgl&gt;, `Tail flags` &lt;lgl&gt;, `Tail twitches` &lt;lgl&gt;, Approaches &lt;lgl&gt;,
+## #   Indifferent &lt;lgl&gt;, `Runs from` &lt;lgl&gt;, `Other Interactions` &lt;chr&gt;, `Lat/Long` &lt;chr&gt;, `Zip Codes` &lt;dbl&gt;,
+## #   `Community Districts` &lt;dbl&gt;, `Borough Boundaries` &lt;dbl&gt;, `City Council Districts` &lt;dbl&gt;, `Police
+## #   Precincts` &lt;dbl&gt;
+```
+
+---
+
+# Challenges II: values
+
+* Why are the values for date so strange (e.g. *1.01e7*)?
+* This is clearly not a date!
+
+---
+
+# Challenges II: values
+
+.pull-left[
+* Examining the original csv-file (or using `view`) reveals that dates are coded simply as numbers using the American MMDDYYYY ordering convention, e.g. "10142018" for October 14th 2018
+* Conveniently, the *lubridate* package provides a range of functions for creating date/time objects
+]
+
+.pull-right[
+
+```r
+library(lubridate)
+
+mdy(10142018)
+```
+
+```
+## [1] "2018-10-14"
+```
+
+```r
+squirrels &lt;- squirrels %&gt;%
+  mutate(Date = mdy(Date))
+
+squirrels$Date
+```
+
+```
+##    [1] "2018-10-14" "2018-10-06" "2018-10-10" "2018-10-18" "2018-10-18" "2018-10-19" "2018-10-20" "2018-10-13"
+##    [9] "2018-10-08" "2018-10-17" "2018-10-17" "2018-10-10" "2018-10-10" "2018-10-08" "2018-10-06" "2018-10-10"
+##   [17] "2018-10-13" "2018-10-07" "2018-10-10" "2018-10-06" "2018-10-18" "2018-10-08" "2018-10-13" "2018-10-08"
+##   [25] "2018-10-07" "2018-10-08" "2018-10-13" "2018-10-08" "2018-10-13" "2018-10-13" "2018-10-13" "2018-10-07"
+##   [33] "2018-10-06" "2018-10-13" "2018-10-14" "2018-10-07" "2018-10-14" "2018-10-07" "2018-10-18" "2018-10-08"
+##   [41] "2018-10-07" "2018-10-14" "2018-10-08" "2018-10-17" "2018-10-07" "2018-10-10" "2018-10-14" "2018-10-07"
+##   [49] "2018-10-07" "2018-10-17" "2018-10-13" "2018-10-07" "2018-10-19" "2018-10-08" "2018-10-06" "2018-10-08"
+##   [57] "2018-10-07" "2018-10-13" "2018-10-10" "2018-10-12" "2018-10-17" "2018-10-17" "2018-10-08" "2018-10-17"
+##   [65] "2018-10-07" "2018-10-14" "2018-10-18" "2018-10-07" "2018-10-13" "2018-10-17" "2018-10-06" "2018-10-14"
+##   [73] "2018-10-07" "2018-10-20" "2018-10-17" "2018-10-07" "2018-10-14" "2018-10-06" "2018-10-13" "2018-10-08"
+##   [81] "2018-10-14" "2018-10-18" "2018-10-13" "2018-10-08" "2018-10-19" "2018-10-07" "2018-10-12" "2018-10-13"
+##   [89] "2018-10-10" "2018-10-06" "2018-10-06" "2018-10-07" "2018-10-14" "2018-10-07" "2018-10-08" "2018-10-06"
+##   [97] "2018-10-07" "2018-10-08" "2018-10-19" "2018-10-06" "2018-10-13" "2018-10-14" "2018-10-13" "2018-10-06"
+##  [105] "2018-10-17" "2018-10-17" "2018-10-18" "2018-10-14" "2018-10-13" "2018-10-10" "2018-10-10" "2018-10-08"
+##  [113] "2018-10-18" "2018-10-18" "2018-10-07" "2018-10-10" "2018-10-10" "2018-10-13" "2018-10-18" "2018-10-18"
+##  [121] "2018-10-08" "2018-10-14" "2018-10-10" "2018-10-10" "2018-10-12" "2018-10-07" "2018-10-08" "2018-10-14"
+##  [129] "2018-10-08" "2018-10-07" "2018-10-06" "2018-10-07" "2018-10-06" "2018-10-06" "2018-10-13" "2018-10-07"
+##  [137] "2018-10-06" "2018-10-18" "2018-10-08" "2018-10-10" "2018-10-13" "2018-10-12" "2018-10-13" "2018-10-08"
+##  [145] "2018-10-13" "2018-10-10" "2018-10-13" "2018-10-18" "2018-10-13" "2018-10-08" "2018-10-08" "2018-10-08"
+##  [153] "2018-10-17" "2018-10-14" "2018-10-13" "2018-10-06" "2018-10-10" "2018-10-14" "2018-10-07" "2018-10-06"
+##  [161] "2018-10-07" "2018-10-06" "2018-10-07" "2018-10-18" "2018-10-12" "2018-10-18" "2018-10-14" "2018-10-14"
+##  [169] "2018-10-06" "2018-10-19" "2018-10-07" "2018-10-19" "2018-10-13" "2018-10-17" "2018-10-10" "2018-10-13"
+##  [177] "2018-10-14" "2018-10-06" "2018-10-12" "2018-10-18" "2018-10-19" "2018-10-18" "2018-10-08" "2018-10-14"
+##  [185] "2018-10-19" "2018-10-10" "2018-10-19" "2018-10-10" "2018-10-06" "2018-10-07" "2018-10-10" "2018-10-07"
+##  [193] "2018-10-20" "2018-10-08" "2018-10-13" "2018-10-08" "2018-10-13" "2018-10-20" "2018-10-06" "2018-10-19"
+##  [201] "2018-10-13" "2018-10-18" "2018-10-10" "2018-10-13" "2018-10-12" "2018-10-17" "2018-10-06" "2018-10-10"
+##  [209] "2018-10-19" "2018-10-08" "2018-10-10" "2018-10-14" "2018-10-14" "2018-10-06" "2018-10-07" "2018-10-20"
+##  [217] "2018-10-18" "2018-10-19" "2018-10-08" "2018-10-20" "2018-10-12" "2018-10-13" "2018-10-06" "2018-10-14"
+##  [225] "2018-10-06" "2018-10-07" "2018-10-07" "2018-10-13" "2018-10-12" "2018-10-06" "2018-10-17" "2018-10-17"
+##  [233] "2018-10-06" "2018-10-07" "2018-10-08" "2018-10-14" "2018-10-10" "2018-10-13" "2018-10-13" "2018-10-17"
+##  [241] "2018-10-20" "2018-10-10" "2018-10-20" "2018-10-07" "2018-10-17" "2018-10-12" "2018-10-08" "2018-10-14"
+##  [249] "2018-10-08" "2018-10-08" "2018-10-17" "2018-10-13" "2018-10-10" "2018-10-06" "2018-10-12" "2018-10-10"
+##  [257] "2018-10-06" "2018-10-18" "2018-10-08" "2018-10-06" "2018-10-13" "2018-10-06" "2018-10-14" "2018-10-20"
+##  [265] "2018-10-08" "2018-10-18" "2018-10-12" "2018-10-07" "2018-10-07" "2018-10-12" "2018-10-13" "2018-10-13"
+##  [273] "2018-10-19" "2018-10-19" "2018-10-13" "2018-10-08" "2018-10-14" "2018-10-10" "2018-10-08" "2018-10-13"
+##  [281] "2018-10-10" "2018-10-17" "2018-10-10" "2018-10-07" "2018-10-12" "2018-10-19" "2018-10-10" "2018-10-17"
+##  [289] "2018-10-14" "2018-10-06" "2018-10-13" "2018-10-13" "2018-10-17" "2018-10-10" "2018-10-17" "2018-10-18"
+##  [297] "2018-10-10" "2018-10-06" "2018-10-13" "2018-10-17" "2018-10-13" "2018-10-07" "2018-10-08" "2018-10-07"
+##  [305] "2018-10-13" "2018-10-08" "2018-10-10" "2018-10-13" "2018-10-18" "2018-10-07" "2018-10-06" "2018-10-19"
+##  [313] "2018-10-10" "2018-10-06" "2018-10-13" "2018-10-20" "2018-10-10" "2018-10-13" "2018-10-07" "2018-10-18"
+##  [321] "2018-10-17" "2018-10-06" "2018-10-13" "2018-10-12" "2018-10-12" "2018-10-06" "2018-10-13" "2018-10-12"
+##  [329] "2018-10-18" "2018-10-14" "2018-10-06" "2018-10-19" "2018-10-06" "2018-10-18" "2018-10-06" "2018-10-08"
+##  [337] "2018-10-20" "2018-10-14" "2018-10-18" "2018-10-12" "2018-10-14" "2018-10-08" "2018-10-19" "2018-10-12"
+##  [345] "2018-10-12" "2018-10-13" "2018-10-07" "2018-10-07" "2018-10-07" "2018-10-17" "2018-10-14" "2018-10-06"
+##  [353] "2018-10-13" "2018-10-07" "2018-10-10" "2018-10-20" "2018-10-17" "2018-10-17" "2018-10-14" "2018-10-06"
+##  [361] "2018-10-13" "2018-10-06" "2018-10-19" "2018-10-17" "2018-10-19" "2018-10-19" "2018-10-06" "2018-10-17"
+##  [369] "2018-10-07" "2018-10-14" "2018-10-07" "2018-10-06" "2018-10-07" "2018-10-13" "2018-10-13" "2018-10-08"
+##  [377] "2018-10-08" "2018-10-14" "2018-10-06" "2018-10-18" "2018-10-06" "2018-10-08" "2018-10-12" "2018-10-13"
+##  [385] "2018-10-07" "2018-10-14" "2018-10-07" "2018-10-14" "2018-10-08" "2018-10-19" "2018-10-10" "2018-10-12"
+##  [393] "2018-10-14" "2018-10-07" "2018-10-06" "2018-10-10" "2018-10-14" "2018-10-07" "2018-10-13" "2018-10-13"
+##  [401] "2018-10-12" "2018-10-12" "2018-10-13" "2018-10-12" "2018-10-06" "2018-10-07" "2018-10-07" "2018-10-18"
+##  [409] "2018-10-13" "2018-10-20" "2018-10-06" "2018-10-13" "2018-10-14" "2018-10-10" "2018-10-14" "2018-10-13"
+##  [417] "2018-10-10" "2018-10-06" "2018-10-06" "2018-10-12" "2018-10-07" "2018-10-13" "2018-10-13" "2018-10-12"
+##  [425] "2018-10-07" "2018-10-08" "2018-10-07" "2018-10-14" "2018-10-10" "2018-10-17" "2018-10-14" "2018-10-13"
+##  [433] "2018-10-07" "2018-10-10" "2018-10-06" "2018-10-08" "2018-10-07" "2018-10-17" "2018-10-14" "2018-10-07"
+##  [441] "2018-10-07" "2018-10-18" "2018-10-18" "2018-10-07" "2018-10-14" "2018-10-07" "2018-10-12" "2018-10-08"
+##  [449] "2018-10-06" "2018-10-18" "2018-10-06" "2018-10-13" "2018-10-06" "2018-10-06" "2018-10-19" "2018-10-06"
+##  [457] "2018-10-17" "2018-10-08" "2018-10-14" "2018-10-13" "2018-10-17" "2018-10-08" "2018-10-17" "2018-10-08"
+##  [465] "2018-10-14" "2018-10-08" "2018-10-18" "2018-10-07" "2018-10-18" "2018-10-07" "2018-10-06" "2018-10-06"
+##  [473] "2018-10-14" "2018-10-13" "2018-10-07" "2018-10-06" "2018-10-20" "2018-10-13" "2018-10-06" "2018-10-07"
+##  [481] "2018-10-13" "2018-10-19" "2018-10-10" "2018-10-07" "2018-10-12" "2018-10-06" "2018-10-14" "2018-10-18"
+##  [489] "2018-10-07" "2018-10-12" "2018-10-08" "2018-10-14" "2018-10-06" "2018-10-14" "2018-10-19" "2018-10-07"
+##  [497] "2018-10-13" "2018-10-14" "2018-10-14" "2018-10-06" "2018-10-14" "2018-10-17" "2018-10-06" "2018-10-06"
+##  [505] "2018-10-07" "2018-10-18" "2018-10-08" "2018-10-06" "2018-10-18" "2018-10-17" "2018-10-08" "2018-10-19"
+##  [513] "2018-10-17" "2018-10-10" "2018-10-13" "2018-10-13" "2018-10-14" "2018-10-14" "2018-10-13" "2018-10-10"
+##  [521] "2018-10-17" "2018-10-10" "2018-10-13" "2018-10-08" "2018-10-07" "2018-10-07" "2018-10-18" "2018-10-06"
+##  [529] "2018-10-18" "2018-10-10" "2018-10-14" "2018-10-10" "2018-10-17" "2018-10-10" "2018-10-10" "2018-10-13"
+##  [537] "2018-10-10" "2018-10-14" "2018-10-20" "2018-10-06" "2018-10-14" "2018-10-17" "2018-10-08" "2018-10-14"
+##  [545] "2018-10-13" "2018-10-06" "2018-10-10" "2018-10-14" "2018-10-12" "2018-10-06" "2018-10-18" "2018-10-17"
+##  [553] "2018-10-07" "2018-10-10" "2018-10-07" "2018-10-18" "2018-10-10" "2018-10-14" "2018-10-08" "2018-10-14"
+##  [561] "2018-10-07" "2018-10-13" "2018-10-10" "2018-10-06" "2018-10-12" "2018-10-07" "2018-10-13" "2018-10-12"
+##  [569] "2018-10-06" "2018-10-06" "2018-10-12" "2018-10-10" "2018-10-17" "2018-10-07" "2018-10-07" "2018-10-14"
+##  [577] "2018-10-14" "2018-10-06" "2018-10-18" "2018-10-14" "2018-10-14" "2018-10-13" "2018-10-13" "2018-10-10"
+##  [585] "2018-10-10" "2018-10-13" "2018-10-08" "2018-10-07" "2018-10-06" "2018-10-12" "2018-10-07" "2018-10-18"
+##  [593] "2018-10-14" "2018-10-14" "2018-10-13" "2018-10-13" "2018-10-10" "2018-10-18" "2018-10-07" "2018-10-14"
+##  [601] "2018-10-14" "2018-10-10" "2018-10-13" "2018-10-07" "2018-10-20" "2018-10-12" "2018-10-10" "2018-10-14"
+##  [609] "2018-10-10" "2018-10-07" "2018-10-10" "2018-10-07" "2018-10-07" "2018-10-14" "2018-10-08" "2018-10-07"
+##  [617] "2018-10-14" "2018-10-17" "2018-10-10" "2018-10-18" "2018-10-17" "2018-10-13" "2018-10-10" "2018-10-14"
+##  [625] "2018-10-10" "2018-10-14" "2018-10-18" "2018-10-13" "2018-10-17" "2018-10-13" "2018-10-18" "2018-10-10"
+##  [633] "2018-10-14" "2018-10-07" "2018-10-20" "2018-10-13" "2018-10-17" "2018-10-19" "2018-10-06" "2018-10-12"
+##  [641] "2018-10-17" "2018-10-17" "2018-10-14" "2018-10-19" "2018-10-08" "2018-10-13" "2018-10-08" "2018-10-07"
+##  [649] "2018-10-14" "2018-10-10" "2018-10-17" "2018-10-06" "2018-10-13" "2018-10-13" "2018-10-14" "2018-10-14"
+##  [657] "2018-10-12" "2018-10-06" "2018-10-17" "2018-10-07" "2018-10-10" "2018-10-13" "2018-10-06" "2018-10-14"
+##  [665] "2018-10-08" "2018-10-14" "2018-10-12" "2018-10-06" "2018-10-12" "2018-10-06" "2018-10-10" "2018-10-08"
+##  [673] "2018-10-06" "2018-10-07" "2018-10-06" "2018-10-10" "2018-10-17" "2018-10-10" "2018-10-17" "2018-10-10"
+##  [681] "2018-10-13" "2018-10-17" "2018-10-17" "2018-10-12" "2018-10-07" "2018-10-08" "2018-10-07" "2018-10-13"
+##  [689] "2018-10-08" "2018-10-10" "2018-10-18" "2018-10-10" "2018-10-19" "2018-10-07" "2018-10-08" "2018-10-08"
+##  [697] "2018-10-06" "2018-10-12" "2018-10-19" "2018-10-06" "2018-10-13" "2018-10-14" "2018-10-17" "2018-10-10"
+##  [705] "2018-10-10" "2018-10-12" "2018-10-10" "2018-10-07" "2018-10-14" "2018-10-18" "2018-10-10" "2018-10-06"
+##  [713] "2018-10-17" "2018-10-07" "2018-10-08" "2018-10-08" "2018-10-06" "2018-10-08" "2018-10-14" "2018-10-18"
+##  [721] "2018-10-07" "2018-10-07" "2018-10-17" "2018-10-17" "2018-10-07" "2018-10-14" "2018-10-07" "2018-10-06"
+##  [729] "2018-10-10" "2018-10-06" "2018-10-06" "2018-10-08" "2018-10-07" "2018-10-14" "2018-10-14" "2018-10-14"
+##  [737] "2018-10-19" "2018-10-06" "2018-10-10" "2018-10-12" "2018-10-07" "2018-10-14" "2018-10-17" "2018-10-14"
+##  [745] "2018-10-10" "2018-10-18" "2018-10-08" "2018-10-13" "2018-10-08" "2018-10-07" "2018-10-18" "2018-10-10"
+##  [753] "2018-10-06" "2018-10-06" "2018-10-14" "2018-10-06" "2018-10-06" "2018-10-17" "2018-10-08" "2018-10-12"
+##  [761] "2018-10-13" "2018-10-12" "2018-10-17" "2018-10-17" "2018-10-12" "2018-10-19" "2018-10-14" "2018-10-10"
+##  [769] "2018-10-10" "2018-10-17" "2018-10-18" "2018-10-12" "2018-10-08" "2018-10-06" "2018-10-06" "2018-10-12"
+##  [777] "2018-10-18" "2018-10-17" "2018-10-13" "2018-10-06" "2018-10-07" "2018-10-18" "2018-10-13" "2018-10-14"
+##  [785] "2018-10-10" "2018-10-17" "2018-10-06" "2018-10-12" "2018-10-07" "2018-10-06" "2018-10-17" "2018-10-08"
+##  [793] "2018-10-14" "2018-10-13" "2018-10-07" "2018-10-17" "2018-10-13" "2018-10-12" "2018-10-07" "2018-10-07"
+##  [801] "2018-10-07" "2018-10-13" "2018-10-13" "2018-10-19" "2018-10-17" "2018-10-17" "2018-10-10" "2018-10-17"
+##  [809] "2018-10-13" "2018-10-08" "2018-10-08" "2018-10-08" "2018-10-08" "2018-10-13" "2018-10-13" "2018-10-06"
+##  [817] "2018-10-07" "2018-10-14" "2018-10-13" "2018-10-12" "2018-10-08" "2018-10-10" "2018-10-14" "2018-10-13"
+##  [825] "2018-10-06" "2018-10-14" "2018-10-19" "2018-10-10" "2018-10-14" "2018-10-06" "2018-10-07" "2018-10-12"
+##  [833] "2018-10-18" "2018-10-17" "2018-10-14" "2018-10-06" "2018-10-06" "2018-10-14" "2018-10-13" "2018-10-14"
+##  [841] "2018-10-06" "2018-10-14" "2018-10-14" "2018-10-17" "2018-10-14" "2018-10-19" "2018-10-10" "2018-10-07"
+##  [849] "2018-10-07" "2018-10-07" "2018-10-17" "2018-10-13" "2018-10-17" "2018-10-13" "2018-10-19" "2018-10-13"
+##  [857] "2018-10-17" "2018-10-07" "2018-10-13" "2018-10-10" "2018-10-06" "2018-10-14" "2018-10-08" "2018-10-18"
+##  [865] "2018-10-18" "2018-10-13" "2018-10-13" "2018-10-13" "2018-10-18" "2018-10-18" "2018-10-14" "2018-10-06"
+##  [873] "2018-10-08" "2018-10-13" "2018-10-17" "2018-10-06" "2018-10-14" "2018-10-14" "2018-10-08" "2018-10-12"
+##  [881] "2018-10-07" "2018-10-18" "2018-10-13" "2018-10-18" "2018-10-14" "2018-10-08" "2018-10-13" "2018-10-19"
+##  [889] "2018-10-12" "2018-10-08" "2018-10-14" "2018-10-07" "2018-10-10" "2018-10-07" "2018-10-06" "2018-10-08"
+##  [897] "2018-10-08" "2018-10-14" "2018-10-10" "2018-10-17" "2018-10-07" "2018-10-13" "2018-10-10" "2018-10-07"
+##  [905] "2018-10-13" "2018-10-08" "2018-10-12" "2018-10-10" "2018-10-08" "2018-10-10" "2018-10-17" "2018-10-07"
+##  [913] "2018-10-18" "2018-10-06" "2018-10-13" "2018-10-10" "2018-10-10" "2018-10-13" "2018-10-07" "2018-10-14"
+##  [921] "2018-10-06" "2018-10-19" "2018-10-10" "2018-10-13" "2018-10-08" "2018-10-07" "2018-10-13" "2018-10-07"
+##  [929] "2018-10-08" "2018-10-17" "2018-10-12" "2018-10-19" "2018-10-10" "2018-10-07" "2018-10-06" "2018-10-07"
+##  [937] "2018-10-07" "2018-10-18" "2018-10-08" "2018-10-17" "2018-10-14" "2018-10-07" "2018-10-13" "2018-10-06"
+##  [945] "2018-10-18" "2018-10-07" "2018-10-12" "2018-10-10" "2018-10-14" "2018-10-07" "2018-10-12" "2018-10-08"
+##  [953] "2018-10-08" "2018-10-07" "2018-10-13" "2018-10-14" "2018-10-08" "2018-10-14" "2018-10-14" "2018-10-07"
+##  [961] "2018-10-06" "2018-10-20" "2018-10-12" "2018-10-19" "2018-10-13" "2018-10-14" "2018-10-14" "2018-10-10"
+##  [969] "2018-10-08" "2018-10-18" "2018-10-07" "2018-10-06" "2018-10-17" "2018-10-14" "2018-10-17" "2018-10-07"
+##  [977] "2018-10-10" "2018-10-08" "2018-10-13" "2018-10-19" "2018-10-19" "2018-10-08" "2018-10-07" "2018-10-20"
+##  [985] "2018-10-14" "2018-10-13" "2018-10-18" "2018-10-10" "2018-10-13" "2018-10-10" "2018-10-19" "2018-10-13"
+##  [993] "2018-10-13" "2018-10-10" "2018-10-18" "2018-10-07" "2018-10-10" "2018-10-17" "2018-10-19" "2018-10-10"
+##  [ reached 'max' / getOption("max.print") -- omitted 2023 entries ]
+```
+]
+
+---
+
+# A bit more "wrangling"
+
+* To recreate some of the analyses that we looked at earlier, we'll rename the relevant variables and restrict the data frame to only include those variables
+
+
+```r
+squirrels &lt;- squirrels %&gt;%
+  rename(hectare = Hectare,
+         shift = Shift,
+         date = Date,
+         age = Age) %&gt;%
+  select(hectare, shift, date, age, primary_fur_colour)
+
+squirrels
+```
+
+```
+## # A tibble: 3,023 x 5
+##    hectare shift date       age      primary_fur_colour
+##    &lt;chr&gt;   &lt;chr&gt; &lt;date&gt;     &lt;chr&gt;    &lt;chr&gt;             
+##  1 37F     PM    2018-10-14 &lt;NA&gt;     &lt;NA&gt;              
+##  2 37E     PM    2018-10-06 Adult    Gray              
+##  3 02E     AM    2018-10-10 Adult    Cinnamon          
+##  4 05D     PM    2018-10-18 Juvenile Gray              
+##  5 39B     AM    2018-10-18 &lt;NA&gt;     &lt;NA&gt;              
+##  6 33H     AM    2018-10-19 Juvenile Gray              
+##  7 06G     PM    2018-10-20 Adult    Gray              
+##  8 35C     PM    2018-10-13 &lt;NA&gt;     Gray              
+##  9 07B     AM    2018-10-08 Adult    Gray              
+## 10 32E     PM    2018-10-17 Adult    Gray              
+## # … with 3,013 more rows
+```
+
+---
+
+
+
+---
+class: inverse, mline, center, middle
+
+# R programming basics
+
+The following closely mirrors R4DS chapter 2 (section 4 in the online version of the book)
+---
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
