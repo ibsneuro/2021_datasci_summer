@@ -1,5 +1,5 @@
 ---
-title: "Basic data exploration / visualisation using the gapminder data"
+title: "Tutorial: Basic data exploration / visualisation using the gapminder data"
 output: learnr::tutorial
 runtime: shiny_prerendered
 ---

@@ -1,0 +1,74 @@
+---
+title: "Tutorial: Working with tidy data / tidying data"
+output: learnr::tutorial
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(tidyverse)
+library(DT)
+
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+## Working with tidy data
+
+The following is based closely on [R4DS Chapter 12](https://r4ds.had.co.nz/tidy-data.html).
+
+### Examples 
+
+Let's start with a couple of examples to show how you can work with tidy data.
+
+First, recall `table1`, which contains the number of TB cases documented by the WHO in Afghanistan, Brazil and China between 1999 and 2000.
+
+Note the use of `datatable` from the `DT` package, which creates an interactive data table.
+
+```{r table1}
+datatable(table1)
+
+```
+
+Now create a new variable to compute the rate per 10,000 population:
+
+```{r rate_per_10000, exercise=TRUE, exercise.eval=TRUE}
+
+table1 %>% 
+  mutate(rate = cases / population * 10000)
+
+```
+
+Compute cases per year:
+
+```{r cases_per_year, exercise=TRUE, exercise.eval=TRUE}
+table1 %>% 
+  count(year, wt = cases)
+```
+
+Visualise changes over time:
+
+```{r change_over_time, exercise=TRUE, exercise.eval=TRUE}
+ggplot(table1, aes(year, cases)) + 
+  geom_line(aes(group = country), colour = "grey50") + 
+  geom_point(aes(colour = country))
+```
+
+```{r tidy_examples_quiz1}
+quiz(caption = "On the basis of the examples above, answer the following questions:",
+ question("Which country had the highest number of cases overall?",
+    answer("Afghanistan"),
+    answer("Brazil"),
+    answer("China", correct=TRUE),
+    allow_retry = TRUE
+  ),
+ 
+ question("Which country had the highest case rate per 10,000 people?",
+    answer("Afghanistan"),
+    answer("Brazil", correct=TRUE),
+    answer("China"),
+    allow_retry = TRUE
+  )
+)
+```
+
