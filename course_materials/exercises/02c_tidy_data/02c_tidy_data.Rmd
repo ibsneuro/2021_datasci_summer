@@ -72,3 +72,41 @@ quiz(caption = "On the basis of the examples above, answer the following questio
 )
 ```
 
+### Exercises (from R4DS)
+
+*1. Using prose, describe how the variables and observations are organised in each of the sample tables. (Use the code chunk below to explore them again, if you wish.)*
+
+```{r sample_table_description, exercise=TRUE, exercise.lines = 3}
+
+```
+
+*2. Compute the rate for table2, and table4a + table4b. You will need to perform four operations:*
+
+  * *Extract the number of TB cases per country per year.*
+  * *Extract the matching population per country per year.*
+  * *Divide cases by population, and multiply by 10000.*
+  * *Store back in the appropriate place.*
+
+  *Which representation is easiest to work with? Which is hardest? Why?*
+
+NOTE: it is expected that you will find this difficult! Have a go and see how far you get -- we will work through the exercise together once you have tried it yourself. (Hint: don't forget that you can extract columns from a data frame using the `$` operator.)
+
+Use this chunk to compute the rate for table2:
+
+```{r compute_rate_table2, exercise=TRUE, exercise.lines = 5}
+
+```
+
+Use this chunk to compute the rate for table4:
+
+```{r compute_rate_table4, exercise=TRUE, exercise.lines = 5}
+
+```
+
+*3. Recreate the plot showing change in cases over time using table2 instead of table1. What do you need to do first?*
+
+```{r plot_from_table2, exercise=TRUE, exercise.lines = 5}
+
+```
+
+

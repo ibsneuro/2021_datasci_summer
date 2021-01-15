@@ -151,3 +151,159 @@ class: inverse, mline, center, middle
 # Your turn!
 
 ## Complete the first part of the *tidy data* tutorial
+
+---
+
+class: inverse, mline, center, middle
+
+# Dealing with untidy data
+
+## (you will need this more often than you might think)
+
+---
+
+# Data are often untidy
+
+
+### Common problems
+
+1. Variables are spread across multiple columns
+2. Observations are spread across multiple rows
+
+### The solution
+
+* functions `pivot_longer()` and `pivot_wider()` in `tidyr`!
+
+---
+
+# Pivot to longer
+
+.pull-left[
+**Common problem**: column names are values of a variable rather than variables
+
+**Example**: `table4a`
+
+```{r show_table4a, echo=FALSE}
+table4a
+```
+]
+
+.pull-right[
+**Solution**: *pivot* these columns to new variables, rendering the dataset longer
+
+We need:
+
+* the columns with values as names (`1999` and `2000`)
+* the name of the variable to move the column names to (`year`)
+* the name of the variable to move the column values to (`cases`)
+
+]
+
+---
+
+# Pivot to longer
+
+```{r pivot_longer}
+
+table4a %>% 
+  pivot_longer(c(`1999`,`2000`), names_to = "year", values_to = "cases")
+
+```
+
+---
+
+# Pivot to longer
+
+```{r echo=FALSE, fig.cap="from R4DS"}
+knitr::include_graphics("images/pivot_longer_r4ds.png")
+```
+
+*Exercise: try doing the same thing with `table4b`!*
+
+---
+
+# Excursus: joining tables
+
+We can easily join the longer versions of `table4a` and `table4b` using `left_join()` (more on joining operations later):
+
+```{r join_example}
+tidy4a <- table4a %>% 
+  pivot_longer(c(`1999`, `2000`), names_to = "year", values_to = "cases")
+
+tidy4b <- table4b %>% 
+  pivot_longer(c(`1999`, `2000`), names_to = "year", values_to = "population")
+
+left_join(tidy4a, tidy4b)
+
+```
+
+---
+
+# Pivot to wider
+
+* `pivot_wider()` is the counterpart of `pivot_longer()` which you need when observations are spread across multiple rows such as in `table2`
+* here, the table needs to be made wider
+
+```{r show_table2, echo=FALSE}
+table2
+```
+
+---
+
+# Pivot to wider
+
+To tidy `table2` we need:
+
+* the column to take variables from (`type`)
+* the column to take values from (`count`)
+
+```{r tidy_table2}
+
+table2 %>% 
+  pivot_wider(names_from = type, values_from = count)
+```
+
+---
+
+# Pivot to wider
+
+```{r echo=FALSE, fig.cap="from R4DS"}
+knitr::include_graphics("images/pivot_wider_r4ds.png")
+```
+
+---
+
+# What's up with table3?
+
+<br>
+
+```{r show_table3, echo=FALSE}
+table3
+```
+
+---
+
+# Multiple variables in one column
+
+* in `table3`, the `rate` column contains both cases and population
+* to deal with this problem, we can use the `separate()` function
+* it allows us to easily split a column according to a delimiting character (here, the "/")
+* note how `separate` is clever enough to correctly guess the delimiting character -- it looks for a non-alphanumeric character by default (to specify it manually, use `sep = "/"`)
+
+```{r separate_table3}
+table3 %>% 
+  separate(rate, into = c("cases","population"))
+```
+
+---
+
+# Multiple variables in one column
+
+<br>
+
+* by default, `separate` retains the original column type (character in this case)
+* we can ask it to try to convert to a more suitable type using the `convert` parameter
+
+```{r separate_and_convert}
+table3 %>% 
+  separate(rate, into = c("cases","population"), convert = TRUE)

@@ -1,0 +1,135 @@
+---
+title: "Solutions to tidying exercises"
+author: "Ina Bornkessel-Schlesewsky"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+```
+
+## Exercises from R4DS
+
+### 12.2 Exercise 2: computing the rate from table2 and table4
+
+Compute the rate for table2 first:
+
+```{r rate_table2}
+cases_per_year <- table2 %>%
+  filter(type =="cases")
+
+population_per_year <- table2 %>%
+  filter(type =="population")
+
+rate <- cases_per_year$count / population_per_year$count * 10000
+country <- rep(unique(table2$country), each=2)
+year <- rep(unique(table2$year), 3)
+type <- rep("rate",6)
+
+interim_table <- tibble(country,year,type,rate) %>% 
+  rename(count = rate)
+
+newtable2 <- table2 %>% 
+  bind_rows(interim_table) %>% 
+  arrange(country,year,type)
+
+newtable2
+```
+
+Now compute the rate for table4a (which includes the cases) and table4b (which includes the population):
+
+```{r rate_table4}
+pop1999 <- table4b$`1999`
+pop2000 <- table4b$`2000`
+
+newtable4 <- table4a %>% 
+  mutate(`1999` = `1999` / pop1999 * 10000,
+         `2000` = `2000` / pop2000 * 10000)
+```
+
+### 12.2 Exercise 3: plot cases over time from table2
+
+```{r plot_from_table2}
+ggplot(filter(table2,type =="cases"), aes(year, count)) + 
+  geom_line(aes(group = country), colour = "grey50") + 
+  geom_point(aes(colour = country)) +
+  ylab("cases")
+
+```
+
+Note that the following syntax also works:
+
+```{r plot_from_table2_alt}
+table2 %>% 
+  filter(type == "cases") %>% 
+  ggplot(aes(year, count)) + 
+    geom_line(aes(group = country), colour = "grey50") + 
+    geom_point(aes(colour = country)) +
+    ylab("cases")
+
+```
+
+### 12.3 Exercise 1
+
+Why are pivot_longer() and pivot_wider() not perfectly symmetrical?
+Carefully consider the following example (Hint: look at the variable types and think about column names.):
+
+```{r}
+stocks <- tibble(
+  year   = c(2015, 2015, 2016, 2016),
+  half  = c(   1,    2,     1,    2),
+  return = c(1.88, 0.59, 0.92, 0.17)
+)
+stocks %>% 
+  pivot_wider(names_from = year, values_from = return) %>% 
+  pivot_longer(`2015`:`2016`, names_to = "year", values_to = "return")
+```
+
+*This is, in part, a sorting issue. Also, year is a character column when reconverted due to the values having been column names after conversion to wider format.*
+
+```{r}
+stocks %>% 
+  pivot_wider(names_from = year, values_from = return) %>% 
+  pivot_longer(`2015`:`2016`, names_to = "year", values_to = "return") %>% 
+  arrange(year,half)
+```
+
+pivot_longer() has a names_ptypes argument, e.g.  names_ptypes = list(year = double()). What does it do?
+
+```{r}
+stocks %>% 
+  pivot_wider(names_from = year, values_from = return) %>% 
+  pivot_longer(`2015`:`2016`, names_to = "year", values_to = "return", names_ptypes = list(year = double()))
+```
+
+### 12.3 Exercise 2
+
+Why does this code fail?
+
+```{r}
+table4a %>% 
+  pivot_longer(c(1999, 2000), names_to = "year", values_to = "cases")
+
+```
+
+### 12.3 Exercise 3
+
+What would happen if you widen this table? Why? How could you add a new column to uniquely identify each value?
+
+```{r}
+people <- tribble(
+  ~name,             ~names,  ~values,
+  #-----------------|--------|------
+  "Phillip Woods",   "age",       45,
+  "Phillip Woods",   "height",   186,
+  "Phillip Woods",   "age",       50,
+  "Jessica Cordero", "age",       37,
+  "Jessica Cordero", "height",   156
+)
+
+people %>% 
+  pivot_wider(names_from = names, values_from = values)
+```
+
