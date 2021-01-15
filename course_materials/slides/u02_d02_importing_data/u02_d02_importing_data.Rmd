@@ -18,8 +18,6 @@ library(tidyverse)
 library(emo)
 ```
 
----
-
 # NYC squirrels revisited!
 
 <br>
@@ -151,4 +149,14 @@ class: inverse, mline, center, middle
 # See squirrels.Rmd!
 
 ---
+
+# More data import options
+
+* R (and the tidyverse) provide a range of additional functions for reading in data, e.g.
+  * `read_csv2()` reads semicolon-delimited files
+  * `read_tsv()` reads tab-delimited files
+  * `read_delim()` reads files with any delimiter (i.e. you need to specify what it is)
+  * `read_table()` reads a variety of files where the fields are separated by whitespace
+  * etc.
+* See [R4DS](https://r4ds.had.co.nz), section 11 (web version), for further details and exercises
 
