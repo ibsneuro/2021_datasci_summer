@@ -15,7 +15,7 @@ class: center, middle, inverse, title-slide
 # Importing data
 ## Data Science for Cognitive (Neuro)Science
 ### Ina Bornkessel-Schlesewsky
-### Jan 2021 (updated: 2021-01-14)
+### Jan 2021 (updated: 2021-01-15)
 
 ---
 
@@ -372,36 +372,26 @@ squirrels &lt;- squirrels %&gt;%
          age = Age) %&gt;%
   select(hectare, shift, date, age, primary_fur_colour)
 
-squirrels
+head(squirrels, n=5)
 ```
 
 ```
-## # A tibble: 3,023 x 5
-##    hectare shift date       age      primary_fur_colour
-##    &lt;chr&gt;   &lt;chr&gt; &lt;date&gt;     &lt;chr&gt;    &lt;chr&gt;             
-##  1 37F     PM    2018-10-14 &lt;NA&gt;     &lt;NA&gt;              
-##  2 37E     PM    2018-10-06 Adult    Gray              
-##  3 02E     AM    2018-10-10 Adult    Cinnamon          
-##  4 05D     PM    2018-10-18 Juvenile Gray              
-##  5 39B     AM    2018-10-18 &lt;NA&gt;     &lt;NA&gt;              
-##  6 33H     AM    2018-10-19 Juvenile Gray              
-##  7 06G     PM    2018-10-20 Adult    Gray              
-##  8 35C     PM    2018-10-13 &lt;NA&gt;     Gray              
-##  9 07B     AM    2018-10-08 Adult    Gray              
-## 10 32E     PM    2018-10-17 Adult    Gray              
-## # … with 3,013 more rows
+## # A tibble: 5 x 5
+##   hectare shift date       age      primary_fur_colour
+##   &lt;chr&gt;   &lt;chr&gt; &lt;date&gt;     &lt;chr&gt;    &lt;chr&gt;             
+## 1 37F     PM    2018-10-14 &lt;NA&gt;     &lt;NA&gt;              
+## 2 37E     PM    2018-10-06 Adult    Gray              
+## 3 02E     AM    2018-10-10 Adult    Cinnamon          
+## 4 05D     PM    2018-10-18 Juvenile Gray              
+## 5 39B     AM    2018-10-18 &lt;NA&gt;     &lt;NA&gt;
 ```
 
 ---
 
-
-
----
 class: inverse, mline, center, middle
 
-# R programming basics
+# See squirrels.Rmd!
 
-The following closely mirrors R4DS chapter 2 (section 4 in the online version of the book)
 ---
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>

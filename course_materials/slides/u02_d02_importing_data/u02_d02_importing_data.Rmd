@@ -140,19 +140,15 @@ squirrels <- squirrels %>%
          age = Age) %>%
   select(hectare, shift, date, age, primary_fur_colour)
 
-squirrels
+head(squirrels, n=5)
 
 ```
 
 ---
 
-
-
----
 class: inverse, mline, center, middle
 
-# R programming basics
+# See squirrels.Rmd!
 
-The following closely mirrors R4DS chapter 2 (section 4 in the online version of the book)
 ---
 
