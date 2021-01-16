@@ -109,4 +109,344 @@ Use this chunk to compute the rate for table4:
 
 ```
 
+## Pivoting to produce tidy data
+
+See slides for examples.
+
+### Exercises
+
+*1. Why are `pivot_longer()` and `pivot_wider()` not perfectly symmetrical? Carefully consider the following example (Hint: look at the variable types and think about column names.)*
+
+```{r ex12_3_1, exercise=TRUE}
+stocks <- tibble(
+  year   = c(2015, 2015, 2016, 2016),
+  half  = c(   1,    2,     1,    2),
+  return = c(1.88, 0.59, 0.92, 0.17)
+)
+stocks %>% 
+  pivot_wider(names_from = year, values_from = return) %>% 
+  pivot_longer(`2015`:`2016`, names_to = "year", values_to = "return")
+```
+
+*1a. pivot_longer() has a names_ptypes argument, e.g.  names_ptypes = list(year = double()). What does it do?*
+
+```{r names_ptypes, exercise=TRUE, exercise_lines = 5}
+
+```
+
+*2. Why does this code fail?*
+
+```{r ex12_3_2, exercise=TRUE}
+table4a %>% 
+  pivot_longer(c(1999, 2000), names_to = "year", values_to = "cases")
+
+```
+
+*3. What would happen if you widen this table? Why? How could you add a new column to uniquely identify each value?*
+
+```{r ex12_3_3, exercise=TRUE}
+people <- tribble(
+  ~name,             ~names,  ~values,
+  #-----------------|--------|------
+  "Phillip Woods",   "age",       45,
+  "Phillip Woods",   "height",   186,
+  "Phillip Woods",   "age",       50,
+  "Jessica Cordero", "age",       37,
+  "Jessica Cordero", "height",   156
+)
+```
+
+*4. Tidy the simple tibble below. Do you need to make it wider or longer? What are the variables?*
+
+```{r ex12_3_4, exercise=TRUE}
+
+preg <- tribble(
+  ~pregnant, ~male, ~female,
+  "yes",     NA,    10,
+  "no",      20,    12
+)
+```
+
+## Case study (from R4DS, chapter 12.6)
+
+This case study involves a realistic tidying problem using data from the *2014 World Health Organization Global Tuberculosis Report*, available as `tidyr::who`. This dataset contains TB cases by year, country, age, gender and diagnosis method. For further details, see the documentation for `who` and *R4DS*.
+
+```{r who_data, exercise=TRUE, exercise.eval=TRUE}
+who
+```
+
+*Can you think of another way of inspecting the data which might provide a better overview of all of the columns?*
+
+```{r who_data2, exercise=TRUE, exercise_lines = 3}
+
+```
+
+```{r who_data2-solution}
+glimpse(who)
+```
+
+What do all these columns represent? Here is the description of the dataset from R4DS:
+
+>This is a very typical real-life example dataset. It contains redundant columns, odd variable codes, and many missing values. In short, who is messy, and we’ll need multiple steps to tidy it. Like dplyr, tidyr is designed so that each function does one thing well. That means in real-life situations you’ll usually need to string together multiple verbs into a pipeline.
+
+>The best place to start is almost always to gather together the columns that are not variables. Let’s have a look at what we’ve got:
+  
+>  * It looks like country, iso2, and iso3 are three variables that redundantly specify the country.
+
+>  * year is clearly also a variable.
+
+>   * We don’t know what all the other columns are yet, but given the structure in the variable names (e.g. new_sp_m014, new_ep_m014, new_ep_f014) these are likely to be values, not variables.
+
+*Write some code to gather together all of the columns from `new_sp_m014` to `new_rel_f65`. Call the resulting dataframe `who1` and use `key` to name the new column that will house the old column names (e.g. new_sp_m014) and `cases` to name the new value column. Also set `values_drop_na = TRUE` to only include values that are present.*
+
+```{r who_pivot, exercise=TRUE, exercise_lines = 5}
+
+```
+
+```{r who_pivot-hint}
+who1 <- who %>% 
+  pivot_longer(___)
+```
+
+```{r who_pivot-solution}
+who1 <- who %>% 
+  pivot_longer(
+    cols = new_sp_m014:newrel_f65, 
+    names_to = "key", 
+    values_to = "cases", 
+    values_drop_na = TRUE)
+
+who1
+```
+
+*Now count the number of occurrences of the different keys in the new data frame to try to get a feel for what is going on here.*
+
+```{r who_count_keys, exercise=TRUE, exercise_lines = 5}
+
+```
+
+```{r who_count_keys-hint}
+who1 %>% 
+  count(___)
+```
+
+```{r who_count_keys-solution}
+who1 %>% 
+  count(key)
+```
+
+*Examine the documentation for `who` to determine what these codes mean and use this information to answer the following questions. (Note that the prefix new_ remains constant throughout.)*
+
+```{r who_codes_quiz}
+
+quiz(caption = "What do the different components of the codes now listed under `key` mean?",
+ question("What does the second part of the code (e.g. ep) refer to?",
+    answer("The individual's risk factor for TB"),
+    answer("The method of diagnosis", correct=TRUE),
+    answer("The prognosis for recovery"),
+    answer("The manner in which TB was contracted"),
+    allow_retry = TRUE
+  ),
+ 
+ question("What does the third part of the code (e.g. m014) refer to?",
+    answer("Gender and age group", correct=TRUE),
+    answer("The type of TB contracted"),
+    answer("The geographic location in which TB was contracted"),
+    answer("The prognosis for recovery"),
+    allow_retry = TRUE
+  )
+)
+```
+
+Before we move on, we need to fix an inconsistency, namely that the codes in their present form include `newrel` rather than `new_rel`. This is easily accomplished using the `str_replace` function from the `stringr` package, a package for working with and manipulating strings. Don't worry too much about the details at this point: just be aware that the code below searches for occurrences of `newrel` in the column `key` and replaces them with `new_rel`.
+
+```{r compute_who1, include=FALSE}
+who1 <- who %>% 
+  pivot_longer(
+    cols = new_sp_m014:newrel_f65, 
+    names_to = "key", 
+    values_to = "cases", 
+    values_drop_na = TRUE)
+```
+
+
+```{r fix_newrel, echo=TRUE}
+who2 <- who1 %>% 
+  mutate(key = stringr::str_replace(key, "newrel", "new_rel"))
+
+who2
+```
+
+Now, let's summarise what the codes mean here for ease of reference. The following is from `?who`:
+
+> The data uses the original codes given by the World Health Organization. The column names for columns five through 60 are made by combining new_ to a code for method of diagnosis (rel = relapse, sn = negative pulmonary smear, sp = positive pulmonary smear, ep = extrapulmonary) to a code for gender (f = female, m = male) to a code for age group (014 = 0-14 yrs of age, 1524 = 15-24 years of age, 2534 = 25 to 34 years of age, 3544 = 35 to 44 years of age, 4554 = 45 to 54 years of age, 5564 = 55 to 64 years of age, 65 = 65 years of age or older).
+
+```{r who_codes_fix_quiz}
+
+ question("In continuing to tidy the data, what do you think we should do with these codes?",
+    answer("Leave as is"),
+    answer("Separate into two columns"),
+    answer("Separate into three columns"),
+    answer("Separate into four columns"),
+    answer("Separate into four columns and delete the redundant one", correct=TRUE),
+    allow_retry = TRUE
+  )
+
+```
+
+We can do this using two passes of `separate`. First, have a go at separating `key` into columns using the underscore ("_") as the separator. Call the resulting data frame `who3` and the new columns `new`, `type` and `sexage`.
+
+```{r who_codes_sep1, exercise=TRUE, exercise_lines=5}
+
+```
+
+```{r who_codes_sep1-hint}
+who3 <- who2 %>% 
+  separate(key, c(___), sep=___)
+
+```
+
+```{r who_codes_sep1-solution}
+who3 <- who2 %>% 
+  separate(key, c("new","type","sexage"), sep="_")
+
+who3
+```
+
+```{r compute_who3, include=FALSE}
+who3 <- who2 %>% 
+  separate(key, c("new","type","sexage"), sep="_")
+
+```
+
+We next drop redundant columns. These include `new` (as we have seen above) as well as `iso2` and `iso3` (different ways of expressing `country`).
+
+```{r who_drop_redundant, echo=TRUE}
+who4 <- who3 %>% 
+  select(-new, -iso2, -iso3)
+who4
+```
+
+Finally, we separate `sexage` into two columns to create our final, tidy data frame `who5`. Note the alternate use of `sep` here: when a number is provided rather than a character, it is interpreted as the position to split at (1 starts at the left, -1 at the right.) 
+
+Experiment with different values of `sep` to get a feel for how this works. Don't forget to rerun the chunk with `sep = 1` once you're done to make sure that `who5` is structured correctly before proceeding. 
+
+```{r separate_numeric, exercise=TRUE, exercise.eval=TRUE}
+
+who5 <- who4 %>% 
+  separate(sexage, c("sex", "age"), sep = 1)
+who5
+
+```
+
+### Final exercises: explore `who5`
+
+Now that we've done all this tidying, let's spend a little bit of time exploring the data.
+
+*1. Plot the total number of cases per year for each age group. Hint: you will need to find an appropriate function for summarising the data before you plot* 
+
+```{r plot_who_by_year_age, exercise=TRUE, exercise_lines = 6}
+
+```
+
+```{r plot_who_by_year_age-solution}
+who_by_year_age <- who5 %>% 
+    group_by(year,age) %>% 
+    summarise(total_cases = sum(cases))
+
+ggplot(who_by_year_age, aes(x = year, y = total_cases)) +
+  geom_line(aes(colour = age))
+```
+
+*2. Use your plot to answer the following questions:*
+
+```{r who_plot_quiz}
+quiz(
+ question("From the mid 1990s until 2010, the total number of TB cases per year",
+    answer("stayed approximately the same"),
+    answer("rose", correct=TRUE),
+    answer("fell"),
+    answer("showed an irregular pattern of rises and falls"),
+    allow_retry = TRUE
+  ),
+  question("Which age group had the lowest number of cases?",
+    answer("0-14", correct=TRUE),
+    answer("15-24"),
+    answer("25-34"),
+    answer("35-44"),
+    answer("45-54"),
+    answer("55-64"),
+    answer("65+"),
+    allow_retry = TRUE
+  ),
+   question("Which age group shows a conspicuous spike of cases?",
+    answer("0-14"),
+    answer("15-24"),
+    answer("25-34"),
+    answer("35-44", correct=TRUE),
+    answer("45-54"),
+    answer("55-64"),
+    answer("65+"),
+    allow_retry = TRUE
+  )
+
+)
+```
+
+*3. See if you can find out more about the spike mentioned above. Can you trace it back to a particular country? (Hint: you will want to reduce the data to some likely candidates before plotting given the large number of countries in the overall dataset.)*
+
+```{r find_the_spike, exercise=TRUE, exercise_lines = 20}
+
+```
+
+
+```{r find_the_spike-solution}
+# note that this solution shows one way in which you might approach this problem
+# it is not the only possibility
+
+# focus on the age range and years of interest
+who_3544_by_country <- who5 %>% 
+  filter(age == "3544" & year > 2005) %>% 
+  group_by(country,year) %>% 
+  summarise(total_cases = sum(cases))
+
+# examine the values
+summary(who_3544_by_country)
+
+# restrict the dataset to observations where cases are above the 3rd quartile
+who_3544_selected_countries <- who_3544_by_country %>% 
+  filter(total_cases > 1436)
+
+# this reduces the number of countries from 214 to 64
+# probably still too many to plot, though!
+length(unique(who_3544_by_country$country))
+length(unique(who_3544_selected_countries$country))
+
+# try "brute force" :)
+who_3544_selected_countries %>% 
+  filter(total_cases > 700000)
+
+# and plot to confirm our suspicion
+who_3544_selected_countries %>% 
+  filter(country == "India") %>% 
+  ggplot(aes(x = year, y = total_cases)) +
+  geom_line()
+
+# go back to a fuller dataset to confirm
+who5 %>% 
+  filter(country == "India") %>% 
+  group_by(year,age) %>% 
+  summarise(total_cases = sum(cases)) %>% 
+  ggplot(aes(year,total_cases)) +
+  geom_line(aes(colour = age))
+
+# if we drop India from the data, the spike should be gone form our original plot
+who5 %>% 
+  # note the syntax for "is not equal to"
+  filter(country != "India") %>% 
+  group_by(year,age) %>% 
+  summarise(total_cases = sum(cases)) %>% 
+  ggplot(aes(year,total_cases)) +
+  geom_line(aes(colour = age))
+```
 

@@ -12,6 +12,8 @@ library(tidyverse)
 
 ## Exercises from R4DS
 
+For a more comprehensive set of solutions to the R4DS exercises, see [this website by Jeffrey Arnold](https://jrnold.github.io/r4ds-exercise-solutions/). There is also [this study guide by Bryan Shalloway](https://brshallo.github.io/r4ds_solutions/).
+
 ### 12.2 Exercise 2: computing the rate from table2 and table4
 
 Compute the rate for table2 first:
@@ -73,7 +75,7 @@ table2 %>%
 
 ### 12.3 Exercise 1
 
-Why are pivot_longer() and pivot_wider() not perfectly symmetrical?
+Why are `pivot_longer()` and `pivot_wider()` not perfectly symmetrical?
 Carefully consider the following example (Hint: look at the variable types and think about column names.):
 
 ```{r}
@@ -87,22 +89,29 @@ stocks %>%
   pivot_longer(`2015`:`2016`, names_to = "year", values_to = "return")
 ```
 
-*This is, in part, a sorting issue. Also, year is a character column when reconverted due to the values having been column names after conversion to wider format.*
+*Year is a character column when reconverted back to longer format due to the values having been column names after conversion to wider format. We can convert back to numeric using `mutate` and `as.double` **or** directly in `pivot_longer` using `names_transform`.*
 
 ```{r}
 stocks %>% 
   pivot_wider(names_from = year, values_from = return) %>% 
   pivot_longer(`2015`:`2016`, names_to = "year", values_to = "return") %>% 
-  arrange(year,half)
+  mutate(year = as.double(year))
+
+stocks %>% 
+  pivot_wider(names_from = year, values_from = return) %>% 
+  pivot_longer(`2015`:`2016`, names_to = "year", values_to = "return", names_transform = list(year = as.double))
 ```
 
 pivot_longer() has a names_ptypes argument, e.g.  names_ptypes = list(year = double()). What does it do?
 
 ```{r}
-stocks %>% 
-  pivot_wider(names_from = year, values_from = return) %>% 
-  pivot_longer(`2015`:`2016`, names_to = "year", values_to = "return", names_ptypes = list(year = double()))
+#stocks %>% 
+#  pivot_wider(names_from = year, values_from = return) %>% 
+#  pivot_longer(`2015`:`2016`, names_to = "year", values_to = "return", names_ptypes = list(year = double()))
+
 ```
+
+*`names_ptypes` can be used to check whether the newly created columns are of the expected type. If this is not the case, an error occurs. The problem can be resolved using `names_transform` as shown above. Note the difference in syntax: `names_ptypes` uses `double()`, which tests for a double, while `names_transform` uses `as.double`, which specifies the function to use for conversion.*   
 
 ### 12.3 Exercise 2
 
@@ -113,6 +122,8 @@ table4a %>%
   pivot_longer(c(1999, 2000), names_to = "year", values_to = "cases")
 
 ```
+
+*The column names are not enclosed in quotes (i.e. backticks ``)*
 
 ### 12.3 Exercise 3
 
@@ -131,5 +142,34 @@ people <- tribble(
 
 people %>% 
   pivot_wider(names_from = names, values_from = values)
+```
+
+*I'm not 100% sure what was intended here. However, my take on this question is that you need to be aware of when there are duplicate values -- this is why `pivot_wider` produces a warning when you try to widen the data frame. It also gives you some potential solutions (try these out for yourself to see how they work!). For example, you can use `values_fn` in conjunction with `mean` to summarise the duplicates using the mean. An option to "add a new column to uniquely identify each value" would be to change the label of the second entry for age to something unique (e.g. age2). Which option you choose depends on the data and your understanding of what is going on with the duplicates.*
+
+```{r}
+people %>% 
+  pivot_wider(names_from = names, values_from = values, values_fn = {mean})
+
+people2 <- people
+people2[3,2] <- "age2"
+
+people2 %>% 
+  pivot_wider(names_from = names, values_from = values)
+```
+
+### 12.3 Exercise 4
+
+Tidy the simple tibble below. Do you need to make it wider or longer? What are the variables?
+
+```{r}
+
+preg <- tribble(
+  ~pregnant, ~male, ~female,
+  "yes",     NA,    10,
+  "no",      20,    12
+)
+
+preg %>% 
+  pivot_longer(male:female, names_to = "sex", values_to = "count")
 ```
 
