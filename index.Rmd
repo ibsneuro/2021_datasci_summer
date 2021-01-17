@@ -17,14 +17,22 @@ Slides:
 
 * [Welcome](course_materials/slides/u01_d01_welcome/u01_d01_welcome.html)
 * [A first example](course_materials/slides/u01_d02_squirrels_example/u01_d02_squirrels_example.html)
+* [Data exploration basics](course_materials/slides/u01_d03_data_exploration_basics/u01_d03_data_exploration_basics.html)
 
 ## Unit 2: More on R
 
-XXX
+Slides:
+
+* [More on R](course_materials/slides/u02_d01_more_on_R/u02_d01_more_on_R.html)
+* [Importing data](course_materials/slides/u02_d02_importing_data/u02_d02_importing_data.html)
+* [Tidying data](course_materials/slides/u02_d03_tidying_data/u02_d03_tidying_data.html)
 
 ## Unit 3: Open Science
 
-XXX
+Slides:
+
+* [Introduction to open science](course_materials/slides/u03_d01_open_science/u03_d01_open_science.pdf)
+
 
 ## Acknowledgements
 
