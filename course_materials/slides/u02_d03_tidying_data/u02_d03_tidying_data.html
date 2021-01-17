@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Tidying data</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Ina Bornkessel-Schlesewsky" />
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/metropolis.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/metropolis-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Tidying data
+## Data Science for Cognitive (Neuro)Science
+### Ina Bornkessel-Schlesewsky
+### Jan 2021 (updated: 2021-01-17)
+
+---
+
+
+
+
+# Recall ...
+
+
+.pull-left[
+
+&lt;img src="images/r4ds_workflow.png" width="100%" style="display: block; margin: auto auto auto 0;" /&gt;
+
+* **import** data (into R)
+* **tidy** data
+  - bring it into a consistent format that can be used for multiple purposes (each column = variable; each row = observation)
+  - lets you focus on understanding the data rather than which format you need
+
+]
+
+.pull-right[
+
+&lt;br&gt;
+
+* **transform** data
+  * e.g. focus on observations of interest (such as those from a particular location), create new variables (such as speed from distance and time), compute summary statistics
+* **visualise** data
+  * essential for understanding
+* **model** data
+  * use (statistical) models to answer your questions about the data
+* **communicate** insights
+]
+
+&lt;span style="font-variant:small-caps;"&gt;Note how you already know the basics of a number of these steps!&lt;/span&gt;
+
+---
+
+# Tidy data
+
+.pull-left[
+### Characteristics of tidy data:
+* Each variable has its own column
+* Each observation has its own row
+* Each value has its own cell
+]
+
+
+&lt;div class="figure"&gt;
+&lt;img src="images/tidy_data_r4ds.png" alt="figure from R4DS" width="2795" /&gt;
+&lt;p class="caption"&gt;figure from R4DS&lt;/p&gt;
+&lt;/div&gt;
+
+---
+
+# Different data formats
+
+&lt;br&gt;
+
+* The three data frames on the next slide show example data provided in the `tidyr` package, which is part of the `tidyverse`. 
+
+&gt; "all display the number of TB cases documented by the World Health Organization in Afghanistan, Brazil, and China between 1999 and 2000" 
+
+(from `?tidyr::table1`) 
+
+* Which of these tables is tidy?
+
+.font80[
+If you want to inspect the data yourself, you can access them via `table`, `table2` and `table3`. 
+]
+
+
+---
+
+# Different data formats
+
+.pull-left[
+
+```
+## # A tibble: 6 x 4
+##   country      year  cases population
+##   &lt;chr&gt;       &lt;int&gt;  &lt;int&gt;      &lt;int&gt;
+## 1 Afghanistan  1999    745   19987071
+## 2 Afghanistan  2000   2666   20595360
+## 3 Brazil       1999  37737  172006362
+## 4 Brazil       2000  80488  174504898
+## 5 China        1999 212258 1272915272
+## 6 China        2000 213766 1280428583
+```
+
+```
+## # A tibble: 6 x 4
+##   country      year type           count
+##   &lt;chr&gt;       &lt;int&gt; &lt;chr&gt;          &lt;int&gt;
+## 1 Afghanistan  1999 cases            745
+## 2 Afghanistan  1999 population  19987071
+## 3 Afghanistan  2000 cases           2666
+## 4 Afghanistan  2000 population  20595360
+## 5 Brazil       1999 cases          37737
+## 6 Brazil       1999 population 172006362
+```
+]
+
+.pull-right[
+
+```
+## # A tibble: 6 x 3
+##   country      year rate             
+## * &lt;chr&gt;       &lt;int&gt; &lt;chr&gt;            
+## 1 Afghanistan  1999 745/19987071     
+## 2 Afghanistan  2000 2666/20595360    
+## 3 Brazil       1999 37737/172006362  
+## 4 Brazil       2000 80488/174504898  
+## 5 China        1999 212258/1272915272
+## 6 China        2000 213766/1280428583
+```
+]
+
+---
+
+# Different data formats
+
+&lt;br&gt;
+
+* If you said `table1`, you were right!
+
+&lt;br&gt;
+
+* Another possibility is for data to be spread across two data frames
+* See the next slide for an example (`table4a` and `table4b` from `tidyr`)
+
+---
+
+# Different data formats
+
+.pull-left[
+
+```
+## # A tibble: 3 x 3
+##   country     `1999` `2000`
+## * &lt;chr&gt;        &lt;int&gt;  &lt;int&gt;
+## 1 Afghanistan    745   2666
+## 2 Brazil       37737  80488
+## 3 China       212258 213766
+```
+]
+
+.pull-right[
+
+```
+## # A tibble: 3 x 3
+##   country         `1999`     `2000`
+## * &lt;chr&gt;            &lt;int&gt;      &lt;int&gt;
+## 1 Afghanistan   19987071   20595360
+## 2 Brazil       172006362  174504898
+## 3 China       1272915272 1280428583
+```
+]
+
+---
+
+# Advantages to working with tidy data
+
+&lt;br&gt;
+
+1. Having one consistent format for data makes it easier to learn the tools required for analysis (which can have a certain uniformity). The `tidyverse` packages, for example, are designed to work with tidy data (who would have thought! 🤣) 
+
+2. It is advantageous for variables to be placed in columns because this caters to R's vectorised nature. (Most R-functions work with vectors of values.)
+
+---
+
+class: inverse, mline, center, middle
+
+# Your turn!
+
+## Complete the first part of the *tidy data* tutorial
+
+---
+
+class: inverse, mline, center, middle
+
+# Dealing with untidy data
+
+## (you will need this more often than you might think)
+
+---
+
+# Data are often untidy
+
+
+### Common problems
+
+1. Variables are spread across multiple columns
+2. Observations are spread across multiple rows
+
+### The solution
+
+* functions `pivot_longer()` and `pivot_wider()` in `tidyr`!
+
+&lt;br&gt;
+&lt;br&gt;
+
+*Note: this doesn't mean that non-tidy data are "bad". There can be many reasons for why a dataset is in a non-tidy format, e.g. easy of data entry if this is being done manually.*
+---
+
+# Pivot to longer
+
+.pull-left[
+**Common problem**: column names are values of a variable rather than variables
+
+**Example**: `table4a`
+
+
+```
+## # A tibble: 3 x 3
+##   country     `1999` `2000`
+## * &lt;chr&gt;        &lt;int&gt;  &lt;int&gt;
+## 1 Afghanistan    745   2666
+## 2 Brazil       37737  80488
+## 3 China       212258 213766
+```
+]
+
+.pull-right[
+**Solution**: *pivot* these columns to new variables, rendering the dataset longer
+
+We need:
+
+* the columns with values as names (`1999` and `2000`)
+* the name of the variable to move the column names to (`year`)
+* the name of the variable to move the column values to (`cases`)
+
+]
+
+---
+
+# Pivot to longer
+
+
+```
+## # A tibble: 6 x 3
+##   country     year   cases
+##   &lt;chr&gt;       &lt;chr&gt;  &lt;int&gt;
+## 1 Afghanistan 1999     745
+## 2 Afghanistan 2000    2666
+## 3 Brazil      1999   37737
+## 4 Brazil      2000   80488
+## 5 China       1999  212258
+## 6 China       2000  213766
+```
+
+---
+
+# Pivot to longer
+
+&lt;div class="figure"&gt;
+&lt;img src="images/pivot_longer_r4ds.png" alt="from R4DS" width="1664" /&gt;
+&lt;p class="caption"&gt;from R4DS&lt;/p&gt;
+&lt;/div&gt;
+
+*Exercise: try doing the same thing with `table4b`!*
+
+---
+
+# Excursus: joining tables
+
+We can easily join the longer versions of `table4a` and `table4b` using `left_join()` (more on joining operations later):
+
+
+```
+## Joining, by = c("country", "year")
+```
+
+```
+## # A tibble: 6 x 4
+##   country     year   cases population
+##   &lt;chr&gt;       &lt;chr&gt;  &lt;int&gt;      &lt;int&gt;
+## 1 Afghanistan 1999     745   19987071
+## 2 Afghanistan 2000    2666   20595360
+## 3 Brazil      1999   37737  172006362
+## 4 Brazil      2000   80488  174504898
+## 5 China       1999  212258 1272915272
+## 6 China       2000  213766 1280428583
+```
+
+---
+
+# Pivot to wider
+
+* `pivot_wider()` is the counterpart of `pivot_longer()` which you need when observations are spread across multiple rows such as in `table2`
+* here, the table needs to be made wider
+
+
+```
+## # A tibble: 12 x 4
+##    country      year type            count
+##    &lt;chr&gt;       &lt;int&gt; &lt;chr&gt;           &lt;int&gt;
+##  1 Afghanistan  1999 cases             745
+##  2 Afghanistan  1999 population   19987071
+##  3 Afghanistan  2000 cases            2666
+##  4 Afghanistan  2000 population   20595360
+##  5 Brazil       1999 cases           37737
+##  6 Brazil       1999 population  172006362
+##  7 Brazil       2000 cases           80488
+##  8 Brazil       2000 population  174504898
+##  9 China        1999 cases          212258
+## 10 China        1999 population 1272915272
+## 11 China        2000 cases          213766
+## 12 China        2000 population 1280428583
+```
+
+---
+
+# Pivot to wider
+
+To tidy `table2` we need:
+
+* the column to take variables from (`type`)
+* the column to take values from (`count`)
+
+
+```
+## # A tibble: 6 x 4
+##   country      year  cases population
+##   &lt;chr&gt;       &lt;int&gt;  &lt;int&gt;      &lt;int&gt;
+## 1 Afghanistan  1999    745   19987071
+## 2 Afghanistan  2000   2666   20595360
+## 3 Brazil       1999  37737  172006362
+## 4 Brazil       2000  80488  174504898
+## 5 China        1999 212258 1272915272
+## 6 China        2000 213766 1280428583
+```
+
+---
+
+# Pivot to wider
+
+&lt;div class="figure"&gt;
+&lt;img src="images/pivot_wider_r4ds.png" alt="from R4DS" width="1667" /&gt;
+&lt;p class="caption"&gt;from R4DS&lt;/p&gt;
+&lt;/div&gt;
+
+---
+
+class: inverse, mline, center, middle
+
+# Try the pivoting exercises in the tutorial
+
+---
+
+# What's up with table3?
+
+&lt;br&gt;
+
+
+```
+## # A tibble: 6 x 3
+##   country      year rate             
+## * &lt;chr&gt;       &lt;int&gt; &lt;chr&gt;            
+## 1 Afghanistan  1999 745/19987071     
+## 2 Afghanistan  2000 2666/20595360    
+## 3 Brazil       1999 37737/172006362  
+## 4 Brazil       2000 80488/174504898  
+## 5 China        1999 212258/1272915272
+## 6 China        2000 213766/1280428583
+```
+
+---
+
+# Multiple variables in one column
+
+* in `table3`, the `rate` column contains both cases and population
+* to deal with this problem, we can use the `separate()` function
+* it allows us to easily split a column according to a delimiting character (here, the "/")
+* note how `separate` is clever enough to correctly guess the delimiting character -- it looks for a non-alphanumeric character by default (to specify it manually, use `sep = "/"`)
+
+
+```
+## # A tibble: 6 x 4
+##   country      year cases  population
+##   &lt;chr&gt;       &lt;int&gt; &lt;chr&gt;  &lt;chr&gt;     
+## 1 Afghanistan  1999 745    19987071  
+## 2 Afghanistan  2000 2666   20595360  
+## 3 Brazil       1999 37737  172006362 
+## 4 Brazil       2000 80488  174504898 
+## 5 China        1999 212258 1272915272
+## 6 China        2000 213766 1280428583
+```
+
+---
+
+# Multiple variables in one column
+
+&lt;br&gt;
+
+* by default, `separate` retains the original column type (character in this case)
+* we can ask it to try to convert to a more suitable type using the `convert` parameter
+
+
+```
+## # A tibble: 6 x 4
+##   country      year  cases population
+##   &lt;chr&gt;       &lt;int&gt;  &lt;int&gt;      &lt;int&gt;
+## 1 Afghanistan  1999    745   19987071
+## 2 Afghanistan  2000   2666   20595360
+## 3 Brazil       1999  37737  172006362
+## 4 Brazil       2000  80488  174504898
+## 5 China        1999 212258 1272915272
+## 6 China        2000 213766 1280428583
+```
+
+---
+
+class: inverse, mline, center, middle
+
+# Putting it all together ...
+
+## Work through the case study + exercises in the tutorial
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

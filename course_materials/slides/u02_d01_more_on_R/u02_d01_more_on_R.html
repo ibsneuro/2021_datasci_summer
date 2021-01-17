@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>More on R</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Ina Bornkessel-Schlesewsky" />
+    <script src="libs/header-attrs-2.6/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/metropolis.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/metropolis-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# More on R
+## Data Science for Cognitive (Neuro)Science
+### Ina Bornkessel-Schlesewsky
+### Jan 2021 (updated: 2021-01-14)
+
+---
+
+
+
+
+---
+
+# Let's get to know R a little better!
+
+&lt;br&gt;
+
+* R programming basics
+* R workflow basics
+* Importing data (they don't always come as an R-package!)
+* Tidying data
+* More on data exploration and data wrangling
+
+---
+
+class: inverse, mline, center, middle
+
+# R programming basics
+
+The following closely mirrors R4DS chapter 2 (section 4 in the online version of the book)
+---
+
+# Using R as a calculator
+
+
+```r
+3+4
+```
+
+```
+## [1] 7
+```
+
+```r
+1 / 200 *30
+```
+
+```
+## [1] 0.15
+```
+
+```r
+sin(pi / 2)
+```
+
+```
+## [1] 1
+```
+
+```r
+sqrt(16)
+```
+
+```
+## [1] 4
+```
+
+Try out a few calculations in your RStudio console!
+
+---
+
+# Creating new objects
+
+.pull-left[
+* Recall the assignment operator `&lt;-`
+* We can use this to create new objects using the general schema:
+
+&gt; `object_name &lt;- value` 
+
+* RStudio shortcut: Alt + - (i.e. the minus sign) 
+* Type an object's name to inspect it
+* Or enclose the assignment in parentheses to show it automatically
+* You can perform calculations using objects
+* But make sure that they're of the right type for the operation that you want to perform!
+  * e.g. try running `b + c` in your console once you have created them
+]
+
+.pull-right[
+
+
+```r
+a &lt;- 1 + 2
+b &lt;- 3 + 4
+c &lt;- "objects can be of different types"
+c
+```
+
+```
+## [1] "objects can be of different types"
+```
+
+```r
+(d &lt;- "another new string")
+```
+
+```
+## [1] "another new string"
+```
+
+```r
+a + b
+```
+
+```
+## [1] 10
+```
+
+]
+
+---
+
+# How to name new objects
+
+* Object names should be descriptive, i.e. allow you to quickly ascertain (or remember) what the object contains.
+* They must start with a letter and can only contain letters, numbers, underscores and full stops
+* You will need a way of naming objects using multiple words (no spaces allowed); here are a few options:
+  * snake_case (used in most of the materials for this course)
+  * camelCase (used in the `gapminder` examples that you will be working with as an exercise after this session)
+  * you.can.also.use.full.stops
+* Also avoid spaces when naming variables (and when naming files) -- it will make your life easier!
+
+---
+
+# Code completion
+
+* RStudio's code completion function is useful for selecting an object that you want to inspect
+* Create the following object:
+
+
+```r
+this_is_a_really_long_name &lt;- 2.5
+```
+
+* To try out code completion, type `this`, press Tab and see what happens
+* If the start of the object name is not unique, you will need to add more letters / select from the list
+* Create another object called `this_is_too` and then try code completion again
+
+---
+
+# Going back to previous commands
+
+* Let's say you want to change the value of `this_is_a_really_long_name` to `3.5`
+* You can go back through the history of the commands typed into the console by pressing the "up" arrow key
+* (Note: this only works with commands typed directly into the console)
+* Select the command you want and then change it
+* You can also search through the commands that you have run by typing `this` and pressing Cmd/Ctrl + up_arrow
+* Use one of these methods to change the value of `this_is_a_really_long_name`
+
+---
+
+# Be precise with object names
+
+
+```r
+r_rocks &lt;- 2^3
+colour &lt;- "blue"
+```
+
+* if you try to inspect these objects but aren't completely precise in your spelling, you will get an error message
+* for example, see what happens if you type in `r_rock` or `R_rocks` or if you use the American spelling of `color`
+- typos matter, case matters, spelling matters ...
+
+---
+
+# Calling functions
+
+* R has many built-in functions (you have already seen a few, e.g. `ggplot`, `filter` etc.)
+* Functions are called like this:
+
+&gt; function_name(arg1 = val1, arg2 = val2, ...)
+
+* The arguments that a function takes differ depending on the function
+
+---
+
+# An example: the *seq()* function
+
+&lt;br&gt;
+
+* Code completion is helpful here too: type `se` and hit Tab
+* Select `seq()` by typing `q` or using the arrow keys
+* Note that RStudio also gives you a bit of information about the function as you do this
+* Once you have selected the right function, hit Tab again
+* Note that RStudio already matches the opening and closing parentheses for you
+
+
+```r
+seq(1,10)
+```
+
+```
+##  [1]  1  2  3  4  5  6  7  8  9 10
+```
+
+- Get help on this function by typing `?seq`
+
+---
+
+# Further assistance with writing code
+
+* Type the following:
+
+
+```r
+x &lt;- "hello world"
+```
+
+* Note how RStudio again provides the matching second set of quotes for you
+* You always need to have paired parentheses or quotes
+* Otherwise, R will tell you that something is missing
+  - try typing `x &lt;- "hello`
+  - the `+` shown in the console is the "continuation character", telling you that something is missing
+  - this is usually a `"` or a `)`
+  - add the missing character and hit Enter (or press Esc to exit)
+  
+---
+
+# Further assistance with writing code
+
+* Recall that you can enclose an assignment in parentheses to print to screen; this is particularly useful for functions, where you will usually want to check the result
+
+
+```r
+(y &lt;- seq(1,10, length.out = 5))
+```
+
+```
+## [1]  1.00  3.25  5.50  7.75 10.00
+```
+
+---
+
+# Inspecting objects in your workspace
+
+.pull-left[
+The Environment panel in the upper-right pane of RStudio shows all of the objects that you have created and their values
+]
+
+.pull-right[
+
+&lt;img src="images/environment.png" width="90%" /&gt;
+
+]
+
+---
+
+# Replicability vs. reproducibility ...
+
+***... and consequences for workflow***
+
+### Replicability
+A study is replicable if the same results are obtained when the study is repeated.
+
+### Reproducibility
+An analysis is reproducible if the same results can be obtained from the data
+
+* By documenting your analysis in an R script, you have already taken an important first step towards reproducibility.
+* While it is perfectly ok to try out different things on the console (and this helps while you're learning), get in the habit of pasting what works into a script to document your analysis.
+* Better still: work directly from an RMarkdown document
+
+---
+
+# Workflow
+
+.pull-left[
+* In the end, you should be able to reproduce the results that you got / the graphs that you generated etc. by simply running your script.
+* You can try this by restarting R (Cmd/Ctrl-Shift-F10 or Session &gt; Restart R): this resets everything so that none of the products of your previous computations are available; then rerun the current script (Cmd/Ctrl-Shift-S)
+* This may seem like extra work to start with, but in addition to being good practice, future you will thank you for it (believe me)!
+]
+
+.pull-right[
+
+* Make sure that RStudio doesn't save objects in your workspace from one session to the next
+
+&lt;img src="images/RStudio_settings.png" width="90%" /&gt;
+
+]
+
+---
+
+# Exercises
+
+&lt;br&gt;
+&lt;br&gt;
+
+Complete the exercises in section 4.4 of R4DS (https://r4ds.had.co.nz/)
+
+---
+
+# Another exercise
+
+&lt;img src="images/gapminder_world_2012.png" width="100%" /&gt;
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

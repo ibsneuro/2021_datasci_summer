@@ -1,0 +1,162 @@
+---
+title: "Importing data"
+subtitle: "Data Science for Cognitive (Neuro)Science"
+author: "Ina Bornkessel-Schlesewsky"
+date: "Jan 2021 (updated: `r Sys.Date()`)"
+output:
+  xaringan::moon_reader:
+    css: [default, metropolis, metropolis-fonts]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r packages, echo=FALSE, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(emo)
+```
+
+# NYC squirrels revisited!
+
+<br>
+
+* Typically, the data we work with aren't available as R packages
+* Rather, we need to read them in from a file
+* csv is a popular format
+  * comma separated values
+  * plain text
+  * can be exported from all popular spreadsheet applications (e.g. Excel)
+  * (+ is accessible without any proprietary software, allows for version control etc. -- more on this later ...)
+* Let's try importing the squirrels data from a csv file (i.e. in the form in which it can be downloaded from the *NYC Open Data* website)
+
+---
+
+# Importing a csv file
+
+* there are various ways to do this in R
+* we will use the `read_csv()` function from the `readr` package (part of the `tidyverse`)
+
+```{r import_squirrels}
+
+squirrels <- read_csv("data/2018_Central_Park_Squirrel_Census_-_Squirrel_Data.csv")
+
+```
+
+---
+
+# Inspect the data
+
+```{r inspect_squirrels}
+head(squirrels, n = 2)
+```
+
+* interactively in RStudio, you can also use `view(squirrels)` for a spreadsheet-type visualisation
+
+---
+
+# Variable types
+
+* R guesses the variable type based on the first 1000 observations
+* Common types include *dbl* (double, a number); *chr* (character, often also referred to as "strings"), *lgl* (logical, TRUE/FALSE)
+* We may want to convert some character variables to factors (i.e. categorical variables with known set of possible values, "levels") at a later point
+* Columns that only contain numbers will be classed as *dbl*, as soon as any entry contains even a single non-numeric character, the column will be classed as *chr* (cf. "Unique Squirrel ID")
+  * this is important to know if, for any reason, your numerical variables contain characters, e.g. to code missing values; `NA`, which is R's internal code for missing values, is an exception
+  * note also that `read_csv` has correctly filled in `NAs` in the squirrels data where there were empty cells
+* If you have a large dataset where the values change in some way after the first 1000 observations, this might produce an error later on due to a misclassification of your variables
+
+---
+
+# Challenges I: variable names
+
+* Some variables have spaces in their names
+* This is cumbersome, as we would always have to enclose the variable name in single backward quotes
+* Try out what happens when you omit the quotation marks or use a different type of quotation marks
+
+```{r}
+squirrels %>%
+  filter(`Primary Fur Color` == "Gray")
+
+```
+
+---
+
+# Challenges I: variable names
+
+* We can fix this by renaming the variable using the `rename` function
+* Note how I've changed the spelling of "colour" at the same time
+
+```{r}
+squirrels <- squirrels %>%
+  rename(primary_fur_colour = `Primary Fur Color`)
+
+squirrels %>%
+  filter(primary_fur_colour == "Gray")
+```
+
+---
+
+# Challenges II: values
+
+* Why are the values for date so strange (e.g. *1.01e7*)?
+* This is clearly not a date!
+
+---
+
+# Challenges II: values
+
+.pull-left[
+* Examining the original csv-file (or using `view`) reveals that dates are coded simply as numbers using the American MMDDYYYY ordering convention, e.g. "10142018" for October 14th 2018
+* Conveniently, the *lubridate* package provides a range of functions for creating date/time objects
+]
+
+.pull-right[
+```{r}
+library(lubridate)
+
+mdy(10142018)
+
+squirrels <- squirrels %>%
+  mutate(Date = mdy(Date))
+
+squirrels$Date
+```
+]
+
+---
+
+# A bit more "wrangling"
+
+* To recreate some of the analyses that we looked at earlier, we'll rename the relevant variables and restrict the data frame to only include those variables
+
+```{r}
+squirrels <- squirrels %>%
+  rename(hectare = Hectare,
+         shift = Shift,
+         date = Date,
+         age = Age) %>%
+  select(hectare, shift, date, age, primary_fur_colour)
+
+head(squirrels, n=5)
+
+```
+
+---
+
+class: inverse, mline, center, middle
+
+# See squirrels.Rmd!
+
+---
+
+# More data import options
+
+* R (and the tidyverse) provide a range of additional functions for reading in data, e.g.
+  * `read_csv2()` reads semicolon-delimited files
+  * `read_tsv()` reads tab-delimited files
+  * `read_delim()` reads files with any delimiter (i.e. you need to specify what it is)
+  * `read_table()` reads a variety of files where the fields are separated by whitespace
+  * etc.
+* See [R4DS](https://r4ds.had.co.nz), section 11 (web version), for further details and exercises
+

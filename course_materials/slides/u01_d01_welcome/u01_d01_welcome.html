@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Welcome!</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Ina Bornkessel-Schlesewsky" />
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/remark-css/metropolis.css" rel="stylesheet" />
+    <link href="libs/remark-css/metropolis-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Welcome!
+## Data Science for Cognitive (Neuro)Science
+### Ina Bornkessel-Schlesewsky
+### Jan 2021 (updated: 2021-01-08)
+
+---
+
+
+
+
+class: inverse, mline, center, middle
+
+# What is Data Science?
+
+---
+
+# What is Data Science?
+
+.pull-left[
+
+&lt;br&gt;
+&gt; Data science is an exciting discipline that allows you to turn raw data into understanding, insight, and knowledge. 
+
+&lt;br&gt;
+
+.font70[
+Wickham, H. &amp; Grolemund, G. (2017) R for Data Science: Import, Tidy, Transform, Visualize, and Model Data. O'Reilly Media.
+Henceforth: *R4DS*
+]
+
+freely available at https://r4ds.had.co.nz
+]
+
+.pull-right[
+&lt;img src="images/r4ds.png" width="85%" style="display: block; margin: auto 0 auto auto;" /&gt;
+]
+
+---
+
+# What is Data Science?
+
+&lt;img src="images/Data_scientist_Venn_diagram.png" width="60%" style="display: block; margin: auto auto auto 0;" /&gt;
+
+.pull-right[
+  .font60[
+  StackExchange Data Science user Stephan Kolassa [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) via [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Data_scientist_Venn_diagram.png)
+  ]
+]
+---
+
+# What is Data Science?
+
+.pull-left[
+
+### The "sexy new job"
+
+  .font80[
+&gt; 'Hal Varian, the chief economist at Google, is known to have said, “The sexy job in the next 10 years will be statisticians.
+People think I’m joking, but who would’ve guessed that computer engineers would’ve been the sexy job of the 1990s?”'
+
+&lt;br&gt;
+
+&gt; 'If “sexy” means having rare qualities that are much in demand, data scientists are already there.
+They are difficult and expensive to hire and, given the very competitive market for their services, difficult to retain.
+There simply aren’t a lot of people with their combination of scientific background and computational and analytical skills.'
+  ]
+]
+
+&lt;img src="images/data_science_hbr.png" width="50%" style="display: block; margin: auto 0 auto auto;" /&gt;
+
+&lt;img src="images/hbr_cover.png" width="40%" style="display: block; margin: auto 0 auto auto;" /&gt;
+
+---
+
+# Data Science ...
+
+##  ... why do we need it for cognitive neuroscience and psychology?
+
+&lt;br&gt;
+
+.font150[
+Quite simply, because we're also interested in turning "raw data into understanding, insight, and knowledge", as well as in communicating our results!
+]
+---
+
+# What you will learn in this course
+
+&lt;br&gt;
+
+* how to gain insights from data using contemporary computational tools
+* basic programming skills in an open source programming language (i.e. R)
+* how to produce reproducible reports (good for science and good for you!)
+* how to use online repositories such as GitHub or the Open Science Framework to share data and code
+
+You will also develop an understanding of how these tools help to foster open science, reproducible research and thus the ethical treatment of data.
+
+While critical for research in cognitive (neuro-)science, the data science skills acquired in this course generalise readily to other domains (think sexy jobs!)
+
+---
+
+# So is this just another stats course ...
+
+.pull-left[
+  .font150[
+  Apart from the fact that we're using R?
+  ]
+]
+
+-- 
+
+.pull-right[
+
+  ![](https://media.giphy.com/media/ftqLysT45BJMagKFuk/giphy.gif)
+  
+  .font60[
+  "Oh no you didn't" gif by *happydog* from https://giphy.com
+  ]
+]
+
+---
+
+# Not just another stats course
+
+
+### Our focus will be on
+
+* understanding data rather than statistical tests per se (though they will come up)
+* philosophy / workflow rather than "results"
+* (moral of the story: it's not just about statistical significance!)
+
+### You will be introduced to a set of tools and workflow that
+
+* foster good practices in dealing with data (i.e. we try to draw the best insights we can from a dataset)
+* foster open science (i.e. we share our data and "show our work", which is good for science and for sharing knowledge)
+* are economical and reproducible (i.e. we avoid doing stuff by hand)
+
+---
+
+# Speaking of workflow
+
+&lt;br&gt;
+
+&lt;img src="images/r4ds_workflow.png" width="100%" /&gt;
+
+.font80[
+  from *R4DS*
+]
+
+---
+
+# Speaking of workflow
+
+
+.pull-left[
+
+&lt;img src="images/r4ds_workflow.png" width="100%" style="display: block; margin: auto auto auto 0;" /&gt;
+
+* **import** data (into R)
+* **tidy** data
+  - bring it into a consistent format that can be used for multiple purposes (each column = variable; each row = observation)
+  - lets you focus on understanding the data rather than which format you need
+
+]
+
+.pull-right[
+
+&lt;br&gt;
+
+* **transform** data
+  * e.g. focus on observations of interest (such as those from a particular location), create new variables (such as speed from distance and time), compute summary statistics
+* **visualise** data
+  * essential for understanding
+* **model** data
+  * use (statistical) models to answer your questions about the data
+* **communicate** insights
+]
+
+---
+
+class: inverse, mline, center, middle
+
+# Let's give it a go!
+
+---
+
+# A highly topical issue ...
+
+.pull-left[
+
+&lt;img src="images/covid_confirmed_linear.png" width="150%" style="display: block; margin: auto auto auto 0;" /&gt;
+
+]
+
+.pull-right[
+
+&lt;img src="images/covid_confirmed_log.png" width="150%" style="display: block; margin: auto auto auto 0;" /&gt;
+
+]
+
+.font80[
+  from https://www.abc.net.au/news/2020-05-13/coronavirus-numbers-worldwide-data-tracking-charts/12107500 retrieved on 2021-01-08
+]
+
+---
+class: middle
+
+## These figures must be really tricky to generate ... right?
+
+---
+
+# Enter R and RStudio
+
+&lt;br&gt;
+
+* R is a programming language for statistical computing (but it can also be used for other things)
+* RStudio is an integrated development environment (IDE) for R, which is a fancy way of saying that it provides a convenient platform within which we can use R 
+
+&lt;img src="images/RStudio.png" width="80%" /&gt;
+
+---
+
+# RStudio Cloud
+
+* For (the first part of) this course, we will be using RStudio Cloud, which is a web-based version of RStudio
+* This means that you won't have to install anything on your computer and that you will have direct access to all of the materials that I have prepared
+* Go to https://rstudio.cloud and create a login
+* Once you have done this, use the link XXX to access the CSN-RH workspace on RStudio Cloud and select the data_science_course_2021 project
+- When you access the project, you will receive your own permanent copy of it to work on
+
+---
+
+# Exercise: Covid-related deaths
+
+.pull-left[
+* click on the document *01a_covid.Rmd*
+* this is an *RMarkdown* document which mixes text and code and is an excellent format for reproducible research reports, as we will see later
+* don't worry too much about the code for now; this is what the document looks like when rendered
+]
+
+.pull-right[
+&lt;img src="images/covid_rendered.png" width="80%" /&gt;
+]
+
+---
+
+# Exercise: Covid-related deaths
+
+.pull-left[
+* click on the *Knit* button at the top of the document to produce the rendered version
+* have a read-through and look at the figure at the bottom
+* there is also an inetractive table to show you which countries are in the data set
+]
+
+.pull-right[
+&lt;img src="images/covid_rendered2.png" width="80%" /&gt;
+]
+
+---
+
+# Your turn!
+
+For each of the following challenges, go back to the raw document (i.e. the one that doesn't look pretty 😄), try to figure out how to make the relevant change and then render the document using *Knit* to see whether you were correct!
+
+* Change *Turkey* to *Australia* in the list of countries under examination; check the figure to see if it worked
+* Use the table at the bottom of the document to find another country of interest to you and change *Australia* to that country
+* See if you can change the figure to represent cumulative deaths from the 100th rather than the 10th death
+* Examine the format of the data being looked at (hint: go to the table close to the top of the document); an alternative entry to "death" under *type* is "confirmed". Can you change the document so that the figure reflects cumulative confirmed cases rather than deaths? (This one is a bit trickier!)
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
