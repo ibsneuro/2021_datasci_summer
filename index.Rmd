@@ -1,6 +1,5 @@
 ---
 title: "Data Science Summer Course 2021"
-author: "Ina Bornkessel-Schlesewsky"
 output:
   prettydoc::html_pretty:
     theme: leonids
@@ -9,7 +8,9 @@ output:
 
 ## Welcome to the course!
 
-Welcome to the 2021 Cognitive Neuroscience / Psychology Data Science Summer Course at the University of South Australia! See below for information on the structure of the course and key course materials. 
+Welcome to the 2021 Cognitive Neuroscience / Psychology Data Science Summer Course at the University of South Australia! See below for information on the structure of the course and key course materials.
+
+For any questions, please contact [Prof. Ina Bornkessel-Schlesewsky](mailto:Ina.Bornkessel-Schlesewsky@unisa.edu.au).
 
 ## Unit 1: Welcome
 
@@ -19,7 +20,7 @@ Slides:
 * [A first example](course_materials/slides/u01_d02_squirrels_example/u01_d02_squirrels_example.html)
 * [Data exploration basics](course_materials/slides/u01_d03_data_exploration_basics/u01_d03_data_exploration_basics.html)
 
-## Unit 2: More on R
+## Unit 2: Digging deeper
 
 Slides:
 
@@ -33,6 +34,13 @@ Slides:
 
 * [Introduction to open science](course_materials/slides/u03_d01_open_science/u03_d01_open_science.pdf)
 
+## Unit 4: Your own project
+
+Content to be added shortly.
+
+## Unit 5: Where to go from here
+
+Content to be added shortly.
 
 ## Acknowledgements
 
