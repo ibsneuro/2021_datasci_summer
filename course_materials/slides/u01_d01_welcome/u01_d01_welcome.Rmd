@@ -262,6 +262,7 @@ knitr::include_graphics("images/RStudio.png")
 .pull-left[
 * click on the document *01a_covid.Rmd*
 * this is an *RMarkdown* document which mixes text and code and is an excellent format for reproducible research reports, as we will see later
+* it is adapted from [Mine Çetinkaya-Rundel's *Datascience in a Box*](https://github.com/rstudio-education/datascience-box/blob/master/course-materials/application-exercises/ae-01b-covid/covid.Rmd)
 * don't worry too much about the code for now; this is what the document looks like when rendered
 ]
 
