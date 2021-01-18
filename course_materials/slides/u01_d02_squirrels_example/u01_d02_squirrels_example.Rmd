@@ -83,7 +83,7 @@ Luckily, you come across data from the [Central Park Squirrel Census](https://ww
 
 - In October 2018, the Central Park Squirrel Census counted the squirrels in Central Park "with the help of 323 volunteer Squirrel Sighters".
 - The data are publicly available via [NYC Open Data](https://data.cityofnewyork.us/Environment/2018-Central-Park-Squirrel-Census-Squirrel-Data/vfnx-vebw).
-- Conveniently, they have also been made available as an R package (more on what this means later) by Dr Mine Çetinkaya-Rundel, who is an Associate Professor in the Department of Statistical Science at Duke University and a Professional Educator and Data Scientist at RStudio.
+- Conveniently, they have also been made available as an R package (more on what this means later) by Dr Mine Çetinkaya-Rundel, who is a Senior Lecturer at the University of Edinburgh and a Professional Educator and Data Scientist at RStudio.
 - The package can be installed from [a github repository](https://github.com/mine-cetinkaya-rundel/nycsquirrels18) -- again, you will learn more about what github is and why it is useful later on in this course.
 
 ***

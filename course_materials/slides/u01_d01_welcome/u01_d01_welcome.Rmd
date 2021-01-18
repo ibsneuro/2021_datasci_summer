@@ -252,7 +252,7 @@ knitr::include_graphics("images/RStudio.png")
 * For (the first part of) this course, we will be using RStudio Cloud, which is a web-based version of RStudio
 * This means that you won't have to install anything on your computer and that you will have direct access to all of the materials that I have prepared
 * Go to https://rstudio.cloud and create a login
-* Once you have done this, use the link XXX to access the CSN-RH workspace on RStudio Cloud and select the data_science_course_2021 project
+* Once you have done this, use the link provided via Slack to access the data_science_summer_2021 workspace on RStudio Cloud and select the project *getting_started*
 - When you access the project, you will receive your own permanent copy of it to work on
 
 ---
