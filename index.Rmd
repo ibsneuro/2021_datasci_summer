@@ -8,7 +8,7 @@ output:
 
 ## Welcome to the course!
 
-Welcome to the 2021 Cognitive Neuroscience / Psychology Data Science Summer Course at the University of South Australia! See below for information on the structure of the course and key course materials.
+Welcome to the 2021 Cognitive Neuroscience / Psychology Data Science Summer Course at the University of South Australia's Cognitive and Systems Neuroscience Research Hub (CSN-RH)! See below for information on the structure of the course and key course materials.
 
 For any questions, please contact [Prof. Ina Bornkessel-Schlesewsky](mailto:Ina.Bornkessel-Schlesewsky@unisa.edu.au).
 
@@ -20,6 +20,14 @@ Slides:
 * [A first example](course_materials/slides/u01_d02_squirrels_example/u01_d02_squirrels_example.html)
 * [Data exploration basics](course_materials/slides/u01_d03_data_exploration_basics/u01_d03_data_exploration_basics.html)
 
+Readings:
+
+* *R for Data Science* chapters [3 (data visualisation)](https://r4ds.had.co.nz/data-visualisation.html) and [5 (data transformation)](https://r4ds.had.co.nz/transform.html)
+
+Further resources:
+
+* [RStudio Cheatsheets](https://rstudio.com/resources/cheatsheets/)
+
 ## Unit 2: Digging deeper
 
 Slides:
@@ -28,11 +36,19 @@ Slides:
 * [Importing data](course_materials/slides/u02_d02_importing_data/u02_d02_importing_data.html)
 * [Tidying data](course_materials/slides/u02_d03_tidying_data/u02_d03_tidying_data.html)
 
+Readings:
+
+* *R for Data Science* chapters [11 (Data import)](https://r4ds.had.co.nz/data-import.html) and [12 (Tidy data)](https://r4ds.had.co.nz/tidy-data.html)
+
 ## Unit 3: Open Science
 
 Slides:
 
 * [Introduction to open science](course_materials/slides/u03_d01_open_science/u03_d01_open_science.pdf)
+
+Readings:
+
+* *R for Data Science* chapters [27 (R Markdown)](https://r4ds.had.co.nz/r-markdown.html) (also see subsequent chapters) and [8 (Workflow: projects)](https://r4ds.had.co.nz/workflow-projects.html)
 
 ## Unit 4: Your own project
 
