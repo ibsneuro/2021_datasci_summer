@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Tools for a reproducible workflow</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Ina Bornkessel-Schlesewsky" />
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/metropolis.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/metropolis-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Tools for a reproducible workflow
+## Data Science for Cognitive (Neuro)Science
+### Ina Bornkessel-Schlesewsky
+### Jan 2021 (updated: 2021-01-22)
+
+---
+
+
+
+
+class: inverse, mline, center, middle
+
+# Directory structure, working directory and paths
+
+---
+
+# The working directory
+
+
+&lt;br&gt;
+
+The working directory in R is the directory in which R looks for any input files and where it saves any files that you ask it to save.
+
+You can find out what it is by typing `getwd()` into the console:
+
+It is also shown at the top of the console:
+
+&lt;img src="images/wd_console2.png" width="85%" style="display: block; margin: auto 0 auto auto;" /&gt;
+
+---
+
+# Directory structure
+
+To get an idea of where your working directory "lives", it is helpful to have a sense of the overall directory structure, e.g. (on a Mac -- this will be a bit different on a different OS, but the basic concept is the same). A directory structure is a bit like a tree:
+
+&lt;img src="images/directory_structure_macro.png" width="85%" style="display: block; margin: auto 0 auto auto;" /&gt;
+
+---
+
+# Zooming in ...
+
+* As you can see, the `2021_data_science` directory ("folder") has quite a rich internal structure with further subdirectories (subfolders) to organise the files for this course.
+* We will focus on the directory `03a_reproducible_workflow`, which is located under `course_materials` and `exercises`
+
+
+&lt;img src="images/directory_structure_zoom.png" width="85%" style="display: block; margin: auto 0 auto auto;" /&gt;
+
+---
+
+# A "path"
+
+* ... provides instructions on how to get to a directory (or file)
+* it can be either absolute, i.e. with reference to the complete directory structure
+* or relative, i.e. from the perspective of a particular directory (normally: our working directory)
+* paths include forward slashes (`/`) to delineate the hierarchical directory structure on Mac OS, Unix and Linux, and backward slashes (`\`) on Windows
+* in R, you can work with either regardless of your OS, but forward slashes are recommended (easier)
+
+Example: path to my `course_materials` directory, assuming that `2021_data_science` is the current working directory
+
+* absolute: `/Users/ina/Documents/teaching/tutorials/2021_data_science/course_materials`
+* relative: `course_materials`
+
+---
+
+# Relative paths for reproducibility
+
+* For a reproducible analysis, use paths relative to the working directory
+* A script will then run on different computers with different overall directory structures, as long as the subdirectory structure under the working directory remains the same
+* e.g. `read_csv("data/input.csv")` will work regardless of where the working directory is located, as long as it contains a subdirectory `data`
+
+&lt;img src="images/wd_comp.png" width="85%" style="display: block; margin: auto 0 auto auto;" /&gt;
+
+---
+
+# Relative paths for reproducibility
+
+## Basic workflow: 
+
+* Place your .R (script) or .Rmd (R Markdown) file in the directory that will be your working directory for an analysis
+* Open it in RStudio
+* Select Session &gt; Set Working Directory &gt; To Source File Location
+* Use relative paths
+
+---
+
+class: inverse, mline, center, middle
+
+# An even better approach: use RStudio projects!
+
+---
+
+# RStudio projects
+
+&lt;br&gt;
+
+... provide an easy way to keep all of the files associated with an analysis (input files, analysis scripts, outputs etc.) in one place.
+
+&lt;br&gt;
+
+*Exercise 1: Have a go at creating an RStudio project by following the instructions in R4DS, section 8.4!*
+
+*Exercise 2: Create an RStudio project for this course by turning the directory that you created yesterday into a project*
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
