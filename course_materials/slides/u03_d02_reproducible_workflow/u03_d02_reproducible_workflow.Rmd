@@ -115,5 +115,7 @@ class: inverse, mline, center, middle
 
 <br>
 
-*Exercise: Have a go at creating an RStudio project by following the instructions in R4DS, section 8.4!*
+*Exercise 1: Have a go at creating an RStudio project by following the instructions in R4DS, section 8.4!*
+
+*Exercise 2: Create an RStudio project for this course by turning the directory that you created yesterday into a project*
 
