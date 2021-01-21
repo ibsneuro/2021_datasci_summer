@@ -45,6 +45,7 @@ Readings:
 Slides:
 
 * [Introduction to open science](course_materials/slides/u03_d01_open_science/u03_d01_open_science.pdf)
+* [A reproducible workflow in R / RStudio](course_materials/slides/u03_d02_reproducible_workflow/u03_d02_reproducible_workflow.html)
 
 Readings:
 
