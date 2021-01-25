@@ -207,7 +207,7 @@ We need:
 
 # Pivot to longer
 
-```{r pivot_longer}
+```{r pivot_longer, echo=TRUE}
 
 table4a %>% 
   pivot_longer(c(`1999`,`2000`), names_to = "year", values_to = "cases")

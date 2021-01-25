@@ -4,6 +4,7 @@
     <title>Tidying data</title>
     <meta charset="utf-8" />
     <meta name="author" content="Ina Bornkessel-Schlesewsky" />
+    <script src="libs/header-attrs-2.6/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/metropolis.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/metropolis-fonts.css" rel="stylesheet" />
@@ -15,7 +16,7 @@ class: center, middle, inverse, title-slide
 # Tidying data
 ## Data Science for Cognitive (Neuro)Science
 ### Ina Bornkessel-Schlesewsky
-### Jan 2021 (updated: 2021-01-17)
+### Jan 2021 (updated: 2021-01-25)
 
 ---
 
@@ -254,6 +255,11 @@ We need:
 # Pivot to longer
 
 
+```r
+table4a %&gt;% 
+  pivot_longer(c(`1999`,`2000`), names_to = "year", values_to = "cases")
+```
+
 ```
 ## # A tibble: 6 x 3
 ##   country     year   cases
@@ -283,6 +289,16 @@ We need:
 
 We can easily join the longer versions of `table4a` and `table4b` using `left_join()` (more on joining operations later):
 
+
+```r
+tidy4a &lt;- table4a %&gt;% 
+  pivot_longer(c(`1999`, `2000`), names_to = "year", values_to = "cases")
+
+tidy4b &lt;- table4b %&gt;% 
+  pivot_longer(c(`1999`, `2000`), names_to = "year", values_to = "population")
+
+left_join(tidy4a, tidy4b)
+```
 
 ```
 ## Joining, by = c("country", "year")
@@ -335,6 +351,11 @@ To tidy `table2` we need:
 * the column to take variables from (`type`)
 * the column to take values from (`count`)
 
+
+```r
+table2 %&gt;% 
+  pivot_wider(names_from = type, values_from = count)
+```
 
 ```
 ## # A tibble: 6 x 4
@@ -392,6 +413,11 @@ class: inverse, mline, center, middle
 * note how `separate` is clever enough to correctly guess the delimiting character -- it looks for a non-alphanumeric character by default (to specify it manually, use `sep = "/"`)
 
 
+```r
+table3 %&gt;% 
+  separate(rate, into = c("cases","population"))
+```
+
 ```
 ## # A tibble: 6 x 4
 ##   country      year cases  population
@@ -413,6 +439,11 @@ class: inverse, mline, center, middle
 * by default, `separate` retains the original column type (character in this case)
 * we can ask it to try to convert to a more suitable type using the `convert` parameter
 
+
+```r
+table3 %&gt;% 
+  separate(rate, into = c("cases","population"), convert = TRUE)
+```
 
 ```
 ## # A tibble: 6 x 4
