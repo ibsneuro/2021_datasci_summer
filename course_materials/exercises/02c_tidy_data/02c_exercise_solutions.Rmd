@@ -19,6 +19,7 @@ For a more comprehensive set of solutions to the R4DS exercises, see [this websi
 Compute the rate for table2 first:
 
 ```{r rate_table2}
+# Note that this solution calculates the rate by adding it into table2 in its current format
 cases_per_year <- table2 %>%
   filter(type =="cases")
 
@@ -38,6 +39,12 @@ newtable2 <- table2 %>%
   arrange(country,year,type)
 
 newtable2
+
+# A different (and slightly simpler) approach could have been to just create a new version of table2 with just the rate
+
+newtable2_rate_only <- tibble(country,year,rate)
+
+newtable2_rate_only
 ```
 
 Now compute the rate for table4a (which includes the cases) and table4b (which includes the population):
@@ -115,11 +122,11 @@ pivot_longer() has a names_ptypes argument, e.g.  names_ptypes = list(year = dou
 
 ### 12.3 Exercise 2
 
-Why does this code fail?
+Why does this code fail? Note that it is commented out so that the Rmd will knit. Uncomment it to see the error.
 
 ```{r}
-table4a %>% 
-  pivot_longer(c(1999, 2000), names_to = "year", values_to = "cases")
+# table4a %>% 
+#  pivot_longer(c(1999, 2000), names_to = "year", values_to = "cases")
 
 ```
 
