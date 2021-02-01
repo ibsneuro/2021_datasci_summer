@@ -6,3 +6,5 @@ Given the brevity of the course (5 days) and that it does not presuppose any pri
 
 Some materials are adapted from [Data Science in a Box](https://datasciencebox.org) by Mine Çetinkaya-Rundel ([github repo](https://github.com/rstudio-education/datascience-box)) under a [Creative Commons Attribution Share Alike 4.0 International](https://creativecommons.org/licenses/by-sa/4.0/) licence. Others draw on chapters from [R for Data Science](https://r4ds.had.co.nz) by Hadley Wickham and Garrett Grolemund.
 See individual files for details.
+
+Please see the [course website](https://ibsneuro.github.io/2021_datasci_summer/) for further details.
