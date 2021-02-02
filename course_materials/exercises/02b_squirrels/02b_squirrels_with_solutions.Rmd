@@ -1,5 +1,5 @@
 ---
-title: "NYC squirrels"
+title: "NYC squirrels (with solutions)"
 author: "Ina Bornkessel-Schlesewsky"
 date: "Jan 2021 (updated: `r Sys.Date()`)"
 output: 
@@ -412,7 +412,7 @@ squirrels2_sel %>%
 squirrels2_sel %>%
   tally(Runs_from)
 
-squirrels %>%
+squirrels2_sel %>%
   tally(Indifferent)
 
 # you could also use table(), e.g.
