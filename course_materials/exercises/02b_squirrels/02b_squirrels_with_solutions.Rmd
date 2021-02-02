@@ -388,4 +388,57 @@ a. What are the possible values for these variables?
 b. How many squirrels were observed displaying each of the the three behaviours?
 c. Does squirrel behaviour differ depending on age or shift? Create boxplots to examine this question. (This one is a challenge!)
 
+```{r exercise4}
+# first: read in the data again
+squirrels2 <- read_csv("data/2018_Central_Park_Squirrel_Census_-_Squirrel_Data.csv")
+
+# Answer a: TRUE / FALSE (can be seen either by examining the data or via the type of variable in
+#           tibble summary: "lgl" = "logical")
+
+# preparation for the remaining questions
+# select columns of interest and rename
+squirrels2_sel <- squirrels2 %>% 
+  rename(Runs_from = `Runs from`) %>% 
+  mutate(Date = mdy(Date)) %>% 
+  select(Date, Shift, Age, Approaches, Indifferent, Runs_from)
+
+
+# Answer b: this can be done using both count and tally
+#           the output is slightly different for each one
+
+squirrels2_sel %>%
+  count(Approaches)
+
+squirrels2_sel %>%
+  tally(Runs_from)
+
+squirrels %>%
+  tally(Indifferent)
+
+# you could also use table(), e.g.
+table(squirrels2_sel$Approaches)
+
+# finally, note that count() can also be used to cross-tabulate the behaviours
+squirrels2_sel %>% 
+  count(Approaches,Indifferent,Runs_from)
+
+# Answer c:
+approach <- squirrels2_sel %>%
+  # key here is in the inclusion of Date
+  # to allow for enough variability to create the boxplots
+  count(Approaches,Age,Shift, Date) %>%
+  # note that this only removes the missing values
+  # we might also want to remove the ? entries as above
+  na.omit()
+
+ggplot(approach, aes(x = Age, y = n)) +
+  geom_boxplot(aes(colour = Approaches)) +
+  facet_wrap(~ Shift) +
+  ggtitle("Squirrels observed approaching humans", subtitle = "by Age and Shift") +
+  ylab("Number of squirrels observed")
+
+
+# Note: this is only one way of tackling this problem.
+```
+
 
