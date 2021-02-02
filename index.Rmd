@@ -10,6 +10,9 @@ output:
 
 Welcome to the 2021 Cognitive Neuroscience / Psychology Data Science Summer Course at the University of South Australia's Cognitive and Systems Neuroscience Research Hub (CSN-RH)! See below for information on the structure of the course and key course materials.
 
+For source files, see the [course github repository](https://github.com/ibsneuro/2021_datasci_summer).
+Session recordings are available to course participants; please see the course Slack workspace for the link.
+
 For any questions, please contact [Prof. Ina Bornkessel-Schlesewsky](mailto:Ina.Bornkessel-Schlesewsky@unisa.edu.au).
 
 ## Unit 1: Welcome
@@ -19,6 +22,11 @@ Slides:
 * [Welcome](course_materials/slides/u01_d01_welcome/u01_d01_welcome.html)
 * [A first example](course_materials/slides/u01_d02_squirrels_example/u01_d02_squirrels_example.html)
 * [Data exploration basics](course_materials/slides/u01_d03_data_exploration_basics/u01_d03_data_exploration_basics.html)
+
+Exercises:
+
+* [01a_covid.Rmd](https://github.com/ibsneuro/2021_datasci_summer/blob/master/course_materials/exercises/01a_covid/01a_covid.Rmd)
+* [01b_covid_exploration.Rmd](https://github.com/ibsneuro/2021_datasci_summer/blob/master/course_materials/exercises/01b_covid_exploration/01b_covid_exploration.Rmd)
 
 Readings:
 
@@ -36,9 +44,22 @@ Slides:
 * [Importing data](course_materials/slides/u02_d02_importing_data/u02_d02_importing_data.html)
 * [Tidying data](course_materials/slides/u02_d03_tidying_data/u02_d03_tidying_data.html)
 
+Exercises:
+
+* [02a_gapminder.Rmd](https://github.com/ibsneuro/2021_datasci_summer/blob/master/course_materials/exercises/02a_gapminder/02a_gapminder.Rmd)
+* [02b_squirrels.Rmd](https://github.com/ibsneuro/2021_datasci_summer/blob/master/course_materials/exercises/02b_squirrels/02b_squirrels.Rmd)
+  * [solutions](https://github.com/ibsneuro/2021_datasci_summer/blob/master/course_materials/exercises/02b_squirrels/02b_squirrels_with_solutions.Rmd)
+* [02c_tidy_data.Rmd](https://github.com/ibsneuro/2021_datasci_summer/blob/master/course_materials/exercises/02c_tidy_data/02c_tidy_data.Rmd)
+  * [solutions](https://github.com/ibsneuro/2021_datasci_summer/blob/master/course_materials/exercises/02c_tidy_data/02c_exercise_solutions.Rmd)
+
 Readings:
 
 * *R for Data Science* chapters [11 (Data import)](https://r4ds.had.co.nz/data-import.html) and [12 (Tidy data)](https://r4ds.had.co.nz/tidy-data.html)
+
+Additional materials:
+
+* Basic information about joining dataframes: [02d_joins.Rmd](https://github.com/ibsneuro/2021_datasci_summer/blob/master/course_materials/exercises/02d_joins/02d_joins.Rmd)
+* See also *R for Data Science* chapter [13 (Relational data)](https://r4ds.had.co.nz/relational-data.html)
 
 ## Unit 3: Open Science
 
@@ -53,11 +74,18 @@ Readings:
 
 ## Unit 4: Your own project
 
-Content to be added shortly.
+Create your own data exploration project using the skills you have learned throughout the course. Use RMarkdown to produce a reproducible report. 
+
+For further details, see the course recordings.
 
 ## Unit 5: Where to go from here
 
-Content to be added shortly.
+See course recordings for details. Further resources:
+
+* Work through the remaining chapters of *R for Data Science* at your own pace to deepen and extend your knowledge.
+* For information regarding version control using git / github, see:
+  * [these slides from Data Science in a Box](https://rstudio-education.github.io/datascience-box/course-materials/slides/u1-d03-toolkit-git/u1-d03-toolkit-git.html#1)
+  * [Jenny Bryan's Happy Git with R](https://happygitwithr.com)
 
 ## Acknowledgements
 
